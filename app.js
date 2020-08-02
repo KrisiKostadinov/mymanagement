@@ -1,6 +1,9 @@
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
 const bodyParser = require('body-parser');
+const session = require('express-session');
+
+const auth = require('./config/auth');
 
 require('dotenv').config();
 
@@ -13,8 +16,13 @@ app.use(expressLayouts);
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use('/user', require('./routes/user'));
-app.use('/', require('./routes/initial'));
+app.use(session({
+    secret: 'secret',
+    resave: true,
+    saveUninitialized: true
+}));
 
+app.use('/user', require('./routes/user'));
+app.use('/', auth.isAuth, require('./routes/initial'));
 
 app.listen(port, () => console.log(`Server listening in ${env} on port: ` + port));
