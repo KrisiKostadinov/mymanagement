@@ -6,6 +6,7 @@ const session = require('express-session');
 const auth = require('./config/auth');
 
 require('dotenv').config();
+require('./config/db');
 
 const app = express();
 
