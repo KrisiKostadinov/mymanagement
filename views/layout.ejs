@@ -7,18 +7,28 @@
 </head>
 <body>
     <ul>
-        <li>
-            <a href="/user/login">Login</a>
-        </li>
-        <li>
-            <a href="/user/register">Register</a>
-        </li>
         <% if(user) { %>
             <li>
                 <a href="/user/logout">Logout</a>
             </li>
             <li>
-                Hello! <%= user %>
+                Hello! <%= user.email %>
+            </li>
+            <ul>
+                <li>
+                    <a href="/company/add">Create company</a>
+                </li>
+                <li>
+                    <a href="/company/all">All companies</a>
+                </li>
+            </ul>
+        <% } %>
+        <% if(!user) { %>
+            <li>
+                <a href="/user/login">Login</a>
+            </li>
+            <li>
+                <a href="/user/register">Register</a>
             </li>
         <% } %>
     </ul>

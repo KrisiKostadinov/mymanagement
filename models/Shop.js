@@ -13,6 +13,6 @@ const ShopSchema = new Schema({
     }
 });
 
-const Shop = model('User', ShopSchema);
+const Shop = model('Shop', ShopSchema);
 
 module.exports = Shop;

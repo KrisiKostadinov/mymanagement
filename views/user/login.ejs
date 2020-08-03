@@ -2,7 +2,9 @@
     <p><%= error %></p>
 <% } %>
 <form action="/user/login" method="POST">
-    <input type="text" autofocus name="email">
-    <input type="password" name="password">
+    <label for="email">Email</label>
+    <input type="text" id="email" autofocus name="email">
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password">
     <button type="submit">Login</button>
 </form>

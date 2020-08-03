@@ -23,7 +23,8 @@ app.use(session({
     saveUninitialized: true
 }));
 
-app.use('/user', require('./routes/user'));
+app.use('/user', auth.isNotAuth, require('./routes/user'));
 app.use('/', auth.isAuth, require('./routes/initial'));
+app.use('/company', require('./routes/company'));
 
 app.listen(port, () => console.log(`Server listening in ${env} on port: ` + port));

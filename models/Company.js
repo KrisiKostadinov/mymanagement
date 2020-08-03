@@ -21,6 +21,6 @@ const CompanySchema = new Schema({
     }
 });
 
-const Company = model('User', CompanySchema);
+const Company = model('Company', CompanySchema);
 
 module.exports = Company;

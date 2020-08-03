@@ -32,7 +32,7 @@ module.exports = {
             
             bcrypt.compare(password, user.passwordHash, async (err, result) => {
                 if(result) {
-                    const token = await createToken(email);
+                    const token = await createToken(email, user._id);
                     req.session.token = token;
                     return res.redirect('/');
                 }
@@ -51,12 +51,12 @@ module.exports = {
             const salt = await bcrypt.genSalt(10);
             const hash = await bcrypt.hash(password, salt);
 
-            await User.create({
+            const user = await User.create({
                 email,
                 passwordHash: hash
             });
             
-            const token = await createToken(email);
+            const token = await createToken(email, user._id);
 
             req.session.token = token;
             

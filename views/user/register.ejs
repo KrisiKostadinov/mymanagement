@@ -1,6 +1,9 @@
 <form action="/user/register" method="POST">
-    <input type="text" autofocus name="email">
+    <label for="email">Email</label>
+    <input type="text" id="email" autofocus name="email">
+    <label for="password">Password</label>
     <input type="password" name="password">
-    <input type="password" name="confirmPassword">
+    <label for="confirmPassword">Confirm password</label>
+    <input type="password" id="confirmPassword" name="confirmPassword">
     <button>Register</button>
 </form>

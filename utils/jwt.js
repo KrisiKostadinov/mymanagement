@@ -1,9 +1,10 @@
 const jwt = require('jsonwebtoken');
 
-const createToken = async (email) => {
+const createToken = async (email, id) => {
     try {
         const token = await jwt.sign({
-            email
+            email,
+            id
         }, 'secret', {
             expiresIn: '60s',
         });
@@ -23,7 +24,17 @@ const decodeToken = async (token) => {
     }
 }
 
+const verifyToken = async (token) => {
+    try {
+        const verifiedToken = await jwt.verify(token, 'secret');
+        return verifiedToken;
+    } catch(err) {
+        console.log(err);
+    }
+}
+
 module.exports = {
     createToken,
-    decodeToken
+    decodeToken,
+    verifyToken,
 }
