@@ -2,6 +2,7 @@ const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const methodOverride = require('method-override');
 
 const auth = require('./config/auth');
 
@@ -13,6 +14,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 const env = process.env.env;
 
+app.use(methodOverride('_method'));
 app.use(expressLayouts);
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: false }));

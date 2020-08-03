@@ -31,7 +31,6 @@ module.exports = {
             const company = await Company.findOne({ _id: id });
 
             const isMyCompany = company.ownerId == user.id;
-            console.log(isMyCompany);
 
             res.render('company/details', { user, error: '', company, isMyCompany });
         },
@@ -43,6 +42,15 @@ module.exports = {
             const company = await Company.findOne({ _id: id });
 
             res.render('company/edit', { error: '', user, company });
+        },
+
+        async deleteById(req, res) {
+            const { id } = req.params;
+            const user = req.user;
+
+            const company = await Company.findOne({ _id: id });
+
+            res.render('company/delete', { company, user });
         }
     },
 
@@ -74,7 +82,6 @@ module.exports = {
                 const company = await Company.findOne({ _id: id, ownerId: user.id });
 
                 if(company.ownerId != user.id) {
-                    console.log(company.ownerId, user.id);
                     return res.redirect('/');
                 }
 
@@ -88,6 +95,22 @@ module.exports = {
             } catch(err) {
                 console.log(err);
             }
+        }
+    },
+
+    delete: {
+        async byId(req, res) {
+            const { id } = req.params;
+
+            const company = await Company.findOne({ _id: id });
+
+            const isMyCompany = company.ownerId == user.id;
+            if(isMyCompany) {
+                await Company.findByIdAndDelete(id);
+                return res.redirect('/company/my');
+            }
+
+            res.redirect('/');
         }
     }
 }
