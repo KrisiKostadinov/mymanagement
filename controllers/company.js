@@ -14,6 +14,23 @@ module.exports = {
             const companies = await Company.find();
 
             res.render('company/all', { user, error: '', companies });
+        },
+
+        async byUserId(req, res) {
+            const user = req.user;
+
+            const companies = await Company.find({ ownerId: user.id });
+
+            res.render('company/my', { user, error: '', companies });
+        },
+
+        async byId(req, res) {
+            const user = req.user;
+            const { id } = req.params;
+
+            const company = await Company.findOne({ _id: id });
+
+            res.render('company/details', { user, error: '', company });
         }
     },
 

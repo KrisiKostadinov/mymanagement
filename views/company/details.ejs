@@ -1,0 +1,13 @@
+<h2><%= company.name %></h2>
+<ul>
+    <% if(company.phoneNumber) { %>
+        <li>
+            <%= company.phoneNumber %>
+        </li>
+    <% } %>
+    <% if(!company.phoneNumber) { %>
+        <li>
+            <a href="company/edit/<%=company._id%>">Add phone number</a>
+        </li>
+    <% } %>
+</ul>
