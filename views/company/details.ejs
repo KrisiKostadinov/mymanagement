@@ -7,7 +7,20 @@
     <% } %>
     <% if(!company.phoneNumber) { %>
         <li>
-            <a href="company/edit/<%=company._id%>">Add phone number</a>
+            <a href="/company/edit/<%=company._id%>">Add phone number</a>
+        </li>
+    <% } %>
+    <% if(company.imageUrl) { %>
+        <li>
+            <img src="<%=company.imageUrl%>">
+        </li>
+    <% } %>
+    <% if(!company.imageUrl) { %>
+        <li>
+            <a href="/company/edit/<%=company._id%>">Add company logo</a>
         </li>
     <% } %>
 </ul>
+<% if(isMyCompany) { %>
+    <a href="/company/edit/<%=company._id%>">Edit</a>
+<% } %>

@@ -1,0 +1,12 @@
+<% if(error) { %>
+    <p><%= error %></p>
+<% } %>
+<form action="/company/edit/<%=company._id%>" method="POST">
+    <label for="name">Name</label>
+    <input type="text" id="name" autofocus value="<%=company.name%>" name="name">
+    <label for="imageUrl">Image</label>
+    <input type="text" id="imageUrl" value="<%=company.imageUrl%>" name="imageUrl">
+    <label for="phoneNumber">Phone number</label>
+    <input type="number" id="phoneNumber" value="<%=company.phoneNumber%>" name="phoneNumber">
+    <button type="submit">Update company</button>
+</form>

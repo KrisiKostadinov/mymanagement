@@ -30,7 +30,19 @@ module.exports = {
 
             const company = await Company.findOne({ _id: id });
 
-            res.render('company/details', { user, error: '', company });
+            const isMyCompany = company.ownerId == user.id;
+            console.log(isMyCompany);
+
+            res.render('company/details', { user, error: '', company, isMyCompany });
+        },
+
+        async edit(req, res) {
+            const user = req.user;
+            const { id } = req.params;
+
+            const company = await Company.findOne({ _id: id });
+
+            res.render('company/edit', { error: '', user, company });
         }
     },
 
@@ -47,9 +59,34 @@ module.exports = {
                     ownerId: req.user.id
                 });
 
-                res.render('company/add', { user, error: '' });
+                res.redirect('/company/my');
             } catch(err) {
                 res.render('company/add', { user, error: 'Please fill all fields!' });
+            }
+        },
+
+        async edit(req, res) {
+            const user = req.user;
+            const { id } = req.params;
+            const { name, phoneNumber, imageUrl } = req.body;
+    
+            try {
+                const company = await Company.findOne({ _id: id, ownerId: user.id });
+
+                if(company.ownerId != user.id) {
+                    console.log(company.ownerId, user.id);
+                    return res.redirect('/');
+                }
+
+                await Company.findByIdAndUpdate(id, {
+                    name,
+                    phoneNumber,
+                    imageUrl
+                });
+    
+                res.redirect('/company/my');
+            } catch(err) {
+                console.log(err);
             }
         }
     }
