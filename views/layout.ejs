@@ -13,9 +13,12 @@
         <li>
             <a href="/user/register">Register</a>
         </li>
-        <% if(user === 'undefined') { %>
+        <% if(user) { %>
             <li>
                 <a href="/user/logout">Logout</a>
+            </li>
+            <li>
+                Hello! <%= user %>
             </li>
         <% } %>
     </ul>

@@ -1,5 +1,8 @@
-<form action="user/login" method="POST">
+<% if(error) { %>
+    <p><%= error %></p>
+<% } %>
+<form action="/user/login" method="POST">
     <input type="text" autofocus name="email">
     <input type="password" name="password">
-    <button>Login</button>
+    <button type="submit">Login</button>
 </form>
