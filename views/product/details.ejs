@@ -1,0 +1,15 @@
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Image</th>
+        <th>Best days</th>
+    </tr>
+    <tr>
+        <td><%=product.name%></td>
+        <td>
+            <img src="<%=product.imageUrl%>" alt="<%=product.name%>">
+        </td>
+        <td><%=product.bestDays%></td>
+    </tr>
+</table>
+<a href="/product/edit/<%=product._id%>">Edit</a>

@@ -27,18 +27,18 @@ module.exports = {
             const user = await User.findOne({ email });
 
             if(!user) {
-                return res.render('user/login', { user, error: 'The password or email is wrong.' });
+                return res.render('user/login', { user: null, error: 'The password or email is wrong.' });
+            }
+
+            const isValid = await bcrypt.compare(password, user.passwordHash);
+
+            if(isValid) {
+                const token = await createToken(email, user._id);
+                req.session.token = token;
+                return res.redirect('/');
             }
             
-            bcrypt.compare(password, user.passwordHash, async (err, result) => {
-                if(result) {
-                    const token = await createToken(email, user._id);
-                    req.session.token = token;
-                    return res.redirect('/');
-                }
-
-                throw new Error(err);
-            });
+            res.render('user/login', { user: null, error: 'The password or email is wrong.' });
         },
 
         async register(req, res) {

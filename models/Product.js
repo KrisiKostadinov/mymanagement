@@ -12,7 +12,7 @@ const ProductSchema = new Schema({
     },
 
     bestDays: {
-        type: Date,
+        type: Number,
         required: true,
     },
 
