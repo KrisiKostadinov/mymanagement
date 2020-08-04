@@ -1,7 +1,9 @@
 const router = require('express').Router();
 const initial = require('../controllers/initial');
 
-router.get('/', initial.get.home);
-router.get('/home', initial.get.home);
+const auth = require('../config/auth');
+
+router.get('/', auth.setAuthToken, initial.get.home);
+router.get('/home', auth.setAuthToken, initial.get.home);
 
 module.exports = router;

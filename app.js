@@ -4,8 +4,6 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const methodOverride = require('method-override');
 
-const auth = require('./config/auth');
-
 require('dotenv').config();
 require('./config/db');
 
@@ -26,7 +24,8 @@ app.use(session({
 }));
 
 app.use('/user', require('./routes/user'));
-app.use('/', auth.isAuth, require('./routes/initial'));
+app.use('/', require('./routes/initial'));
 app.use('/company', require('./routes/company'));
+app.use('/product', require('./routes/product'));
 
 app.listen(port, () => console.log(`Server listening in ${env} on port: ` + port));

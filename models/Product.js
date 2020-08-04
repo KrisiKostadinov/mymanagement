@@ -11,7 +11,7 @@ const ProductSchema = new Schema({
         type: String
     },
 
-    bestTo: {
+    bestDays: {
         type: Date,
         required: true,
     },

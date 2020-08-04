@@ -34,7 +34,27 @@ const isNotAuth = async (req, res, next) => {
     res.redirect('/');
 }
 
+const setAuthToken = async (req, res, next) => {
+    const token = req.session.token;
+
+    if(!token) {
+        return next();
+    }
+    
+    const isVerified = await verifyToken(token);
+
+    if(!isVerified) {
+        return next();
+    }
+
+    const { email, id } = await decodeToken(token);
+    req.user = { email, id };
+
+    next();
+}
+
 module.exports = {
     isAuth,
     isNotAuth,
+    setAuthToken,
 }
