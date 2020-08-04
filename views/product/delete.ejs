@@ -1,0 +1,9 @@
+<form action="/product/<%=product._id%>?_method=DELETE" method="POST">
+    <label for="name">Name</label>
+    <input type="text" id="name" autofocus value="<%=product.name%>" name="name" readonly>
+    <label for="imageUrl">Image</label>
+    <input type="text" id="imageUrl" value="<%=product.imageUrl%>" name="imageUrl" readonly>
+    <label for="phoneNumber">Phone number</label>
+    <input type="number" id="phoneNumber" value="<%=product.phoneNumber%>" name="phoneNumber" readonly>
+    <button type="submit">Delete product</button>
+</form>

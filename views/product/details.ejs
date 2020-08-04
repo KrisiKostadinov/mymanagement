@@ -12,4 +12,7 @@
         <td><%=product.bestDays%></td>
     </tr>
 </table>
-<a href="/product/edit/<%=product._id%>">Edit</a>
+<% if(isMyProduct) { %>
+    <a href="/product/edit/<%=product._id%>">Edit</a>
+    <a href="/product/delete/<%=product._id%>">Dismiss</a>
+<% } %>

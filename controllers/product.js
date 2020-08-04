@@ -15,12 +15,11 @@ module.exports = {
         async all(req, res) {
             const user = req.user;
             const companyId = req.params.companyId || req.query.companyId;
-            console.log('000000000' + companyId);
-
             
             const products = await Product.find({ companyId: companyId });
+            const company = await Company.findOne({ _id: companyId });
             
-            res.render('product/all', { user, error: '', products });
+            res.render('product/all', { user, error: '', products, company });
         },
 
         async edit(req, res) {
@@ -39,14 +38,32 @@ module.exports = {
 
             const product = await Product.findOne({ _id: id });
 
-            res.render('product/details', { user, product });
+            let isMyProduct = false;
+            if(user) {
+                isMyProduct = user.id == product.userId;
+            }
+
+            res.render('product/details', { user, product, isMyProduct });
+        },
+
+        async deleteById(req, res) {
+            const user = req.user;
+            const { id } = req.params;
+
+            const product = await Product.findOne({ _id: id });
+            
+            console.log(product);
+            res.render('product/delete', { user, product });
         }
     },
 
     post: {
         async add(req, res) {
-            const data = req.body;
             const user = req.user;
+            const data = {
+                ...req.body,
+                userId: user.id
+            };
 
             try {
                 await Product.create(data);
@@ -64,7 +81,8 @@ module.exports = {
             try {
                 const product = await Product.findById(id);
 
-                if(product.companyId == user.id) {
+                const isMyProduct = product.userId == user.id;
+                if(!isMyProduct) {
                     return res.redirect('/');
                 }
 
@@ -73,6 +91,23 @@ module.exports = {
             } catch(err) {
                 console.log(err);
             }
+        }
+    },
+
+    delete: {
+        async byId(req, res) {
+            const { id } = req.params;
+            const user = req.user;
+
+            const product = await Product.findOne({ _id: id });
+
+            const isMyProduct = product.userId == user.id;
+            if(isMyProduct) {
+                await Product.findByIdAndDelete(id);
+                return res.redirect('/product/all?companyId=' + product.companyId);
+            }
+
+            res.redirect('/');
         }
     }
 }

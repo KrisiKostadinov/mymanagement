@@ -19,6 +19,11 @@ const ProductSchema = new Schema({
     companyId: {
         type: ObjectId,
         ref: 'Company'
+    },
+
+    userId: {
+        type: ObjectId,
+        ref: 'User'
     }
 });
 
