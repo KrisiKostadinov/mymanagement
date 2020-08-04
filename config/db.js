@@ -8,7 +8,7 @@ mongoose.connect(uri, {
     useUnifiedTopology: true,
     useCreateIndex: true,
     useNewUrlParser: true,
-}, () => {
+}, async () => {
     console.log('Connected to db');
 
     const users = await User.find();

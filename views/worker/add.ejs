@@ -1,0 +1,11 @@
+<form action="/worker/add" method="POST">
+    <label for="name">Name</label>
+    <input type="text" id="name" autofocus name="name">
+    <label for="companyId">Select company</label>
+    <select name="companyId" id="companyId">
+        <% companies.forEach(company => { %>
+            <option value="<%=company._id%>"><%= company.name%></option>    
+        <% }) %>
+    </select>
+    <button type="submit">Create worker</button>
+</form>

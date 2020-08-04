@@ -1,0 +1,27 @@
+<h2>Create shop</h2>
+<% if(error) { %>
+    <p><%= error %></p>
+<% } %>
+<% if(isValid) { %>
+    <form action="/shop/add" method="POST">
+        <label for="address">Address</label>
+        <input type="text" id="address" autofocus value="<%=shop.address%>" name="address">
+        <label for="companyId">Select company</label>
+        <select name="companyId" id="companyId">
+            <% companies.forEach(company => { %>
+                <option value="<%=company._id%>"><%= company.name%></option>    
+            <% }) %>
+        </select>
+        <label for="workerId">Select worker</label>
+        <select name="workerId" id="workerId">
+            <% workers.forEach(worker => { %>
+                <option value="<%=worker._id%>"><%= worker.name%></option>    
+            <% }) %>
+        </select>
+        <button type="submit">Create shop</button>
+    </form>
+<% } %>
+<% if(!isValid) { %>
+    <p>Dot be added shop because uot do not workers!</p>
+    <a href="/worker/add">Add worker</a>
+<% } %>

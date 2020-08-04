@@ -14,9 +14,14 @@ const WorkerSchema = new Schema({
     companyId: {
         type: ObjectId,
         ref: 'Company'
+    },
+
+    userId: {
+        type: ObjectId,
+        ref: 'User'
     }
 });
 
-const Worker = model('User', WorkerSchema);
+const Worker = model('Worker', WorkerSchema);
 
 module.exports = Worker;
