@@ -9,7 +9,7 @@ module.exports = {
 
             const companies = await Company.find({ ownerId: user.id });
             
-            res.render('product/add', { user, error: '', companies });
+            res.render('product/add', { user, error: '', companies, product: { } });
         },
 
         async all(req, res) {
@@ -65,11 +65,17 @@ module.exports = {
                 userId: user.id
             };
 
+            if(!data.companyId) {
+                return res.render('product/add',
+                     { user, error: 'You do not create a product without a company!', companies: [], product: data });
+            }
+
             try {
                 await Product.create(data);
                 res.redirect('all?companyId=' + data.companyId);
             } catch(err) {
-                res.render('product/add', { user, error: 'Please fill all fields!', companies: [] });
+                const companies = await Company.find({ ownerId: user.id });
+                res.render('product/add', { user, error: 'Please fill all fields!', companies, product: data });
             }
         },
 

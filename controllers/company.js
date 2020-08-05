@@ -1,4 +1,5 @@
 const Company = require('../models/Company');
+const Product = require('../models/Product');
 
 module.exports = {
     get: {
@@ -41,7 +42,7 @@ module.exports = {
 
             const company = await Company.findOne({ _id: id });
 
-            res.render('company/edit', { error: '', user, company });
+            res.render(`company/edit`, { error: '', user, company });
         },
 
         async deleteById(req, res) {
@@ -58,6 +59,12 @@ module.exports = {
         async add(req, res) {
             const user = req.user;
             const { name, imageUrl, phoneNumber } = req.body;
+
+            console.log(user);
+            
+            if(!user) {
+                return res.redirect('/');
+            }
 
             try {
                 await Company.create({
@@ -91,7 +98,7 @@ module.exports = {
                     imageUrl
                 });
     
-                res.redirect('/company/my');
+                res.redirect(`/company/${id}`);
             } catch(err) {
                 console.log(err);
             }
@@ -101,11 +108,17 @@ module.exports = {
     delete: {
         async byId(req, res) {
             const { id } = req.params;
+            const user = req.user;
+
+            if(!user) {
+                return res.redirect('/');
+            }
 
             const company = await Company.findOne({ _id: id });
 
             const isMyCompany = company.ownerId == user.id;
             if(isMyCompany) {
+                await Product.deleteMany({ companyId: company._id });
                 await Company.findByIdAndDelete(id);
                 return res.redirect('/company/my');
             }

@@ -47,7 +47,7 @@ module.exports = {
 
         async all(req, res) {
             const user = req.user;
-            const companyId = req.params.companyId || req.query.companyId;
+            const companyId = req.params.companyId;
 
             try {
                 const shops = await Shop.find({ companyId: companyId }) || [];
@@ -81,7 +81,7 @@ module.exports = {
 
             try {
                 const shop = await Shop.create(data);
-                return res.redirect(`/shop/all`);
+                return res.redirect(`/shop/${shop.companyId}`);
             } catch(err) {
                 console.log(err);
                 const companies = await Company.find({ ownerId: user.id });

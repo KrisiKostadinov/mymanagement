@@ -9,7 +9,6 @@ router.get('/delete/:id', auth.isAuth, auth.setAuthToken, shop.get.deleteById);
 router.get('/details/:id', auth.isAuth, auth.setAuthToken, shop.get.byId);
 router.get('/:id/:companyId', auth.isAuth, auth.setAuthToken, shop.get.byId);
 router.get('/:companyId', auth.isAuth, auth.setAuthToken, shop.get.all);
-router.get('/all', auth.isAuth, auth.setAuthToken, shop.get.all);
 
 router.post('/add', auth.isAuth, auth.setAuthToken, shop.post.add);
 router.post('/edit/:id', auth.isAuth, auth.setAuthToken, shop.post.edit);

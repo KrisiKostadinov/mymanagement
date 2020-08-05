@@ -4,11 +4,11 @@
 <h2>Create product</h2>
 <form action="/product/add" method="POST">
     <label for="name">Name</label>
-    <input type="text" id="name" autofocus name="name">
+    <input type="text" id="name" autofocus value="<%=product.name%>" name="name">
     <label for="imageUrl">Image</label>
-    <input type="text" id="imageUrl" name="imageUrl">
+    <input type="text" id="imageUrl" value="<%=product.imageUrl%>" name="imageUrl">
     <label for="bestDays">Best days in number</label>
-    <input type="number" id="bestDays" name="bestDays">
+    <input type="number" id="bestDays" value="<%=product.bestDays%>" name="bestDays">
     <label for="companyId">Select company</label>
     <select name="companyId" id="companyId">
         <% companies.forEach(company => { %>
