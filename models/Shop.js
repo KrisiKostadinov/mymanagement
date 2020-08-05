@@ -10,6 +10,11 @@ const ShopSchema = new Schema({
     workerId: {
         type: ObjectId,
         ref: 'Worker'
+    },
+
+    companyId: {
+        type: ObjectId,
+        ref: 'Company'
     }
 });
 

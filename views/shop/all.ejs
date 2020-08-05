@@ -1,0 +1,9 @@
+<h2>All shops - <%=company.name%></h2>
+<ul>
+    <% shops.forEach(shop => { %>
+        <li>
+            <a href="/shop/<%=shop._id%>/<%=company._id%>"><%= shop.address %></a>
+        </li>
+    <% }) %>
+</ul>
+<a href="/shop/add">Add shop</a>

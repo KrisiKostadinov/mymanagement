@@ -1,0 +1,12 @@
+<table>
+    <tr>
+        <th>Address</th>
+    </tr>
+    <tr>
+        <td><%=shop.address%></td>
+    </tr>
+</table>
+<% if(user) { %>
+    <a href="/shop/edit/<%=shop._id%>">Edit</a>
+    <a href="/shop/delete/<%=shop._id%>">Dismiss</a>
+<% } %>
