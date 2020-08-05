@@ -1,10 +1,11 @@
 const jwt = require('jsonwebtoken');
 
-const createToken = async (email, id) => {
+const createToken = async (email, id, claim = null) => {
     try {
         const token = await jwt.sign({
             email,
-            id
+            id,
+            claim
         }, 'secret', {
             expiresIn: '60s',
         });

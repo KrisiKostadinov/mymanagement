@@ -1,0 +1,21 @@
+<h2>All users</h2>
+<ul>
+    <% users.forEach(user => { %>
+        <li>
+            <% if(user.claim === 'admin') { %>
+                <%= user.email %> (you)
+            <% } else if(user.claim === 'worker') { %>
+                <form action="/admin/remove-worker/<%=user._id%>?_method=DELETE" method="POST">
+                    <%= user.email %>
+                    <button type="submit">Remove worker</button>
+                </form>
+            <% } else { %>
+                <form action="/admin/add-worker/<%=user._id%>" method="POST">
+                    <%= user.email %>
+                    <button type="submit">Add worker</button>
+                </form>
+            <% } %>
+            <hr>
+        </li>
+    <% }) %>
+</ul>

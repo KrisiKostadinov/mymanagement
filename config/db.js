@@ -8,6 +8,7 @@ mongoose.connect(uri, {
     useUnifiedTopology: true,
     useCreateIndex: true,
     useNewUrlParser: true,
+    useFindAndModify: true,
 }, async () => {
     console.log('Connected to db');
 
@@ -19,7 +20,8 @@ mongoose.connect(uri, {
 
         User.create({
             email: 'admin@admin.com',
-            passwordHash: hash
+            passwordHash: hash,
+            claim: 'admin'
         });
     }
 });

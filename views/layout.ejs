@@ -27,6 +27,11 @@
                 <li>
                     <a href="/company/my">My companies</a>
                 </li>
+                <% if(user.claim === 'admin') { %>
+                    <li>
+                        <a href="/admin">Administration</a>
+                    </li>
+                <% } %>
             </ul>
         <% } %>
         <% if(!user) { %>

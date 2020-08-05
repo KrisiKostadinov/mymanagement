@@ -29,5 +29,6 @@ app.use('/company', require('./routes/company'));
 app.use('/product', require('./routes/product'));
 app.use('/shop', require('./routes/shop'));
 app.use('/worker', require('./routes/worker'));
+app.use('/admin', require('./routes/admin'));
 
 app.listen(port, () => console.log(`Server listening in ${env} on port: ` + port));

@@ -33,7 +33,7 @@ module.exports = {
             const isValid = await bcrypt.compare(password, user.passwordHash);
 
             if(isValid) {
-                const token = await createToken(email, user._id);
+                const token = await createToken(email, user._id, user.claim);
                 req.session.token = token;
                 return res.redirect('/');
             }

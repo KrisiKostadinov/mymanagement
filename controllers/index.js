@@ -3,6 +3,7 @@ const company = require('../controllers/company');
 const product = require('../controllers/product');
 const shop = require('../controllers/shop');
 const worker = require('../controllers/worker');
+const admin = require('../controllers/admin');
 
 module.exports = {
     user,
@@ -10,4 +11,5 @@ module.exports = {
     product,
     shop,
     worker,
+    admin,
 }

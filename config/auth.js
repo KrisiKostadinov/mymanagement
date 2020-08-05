@@ -13,8 +13,7 @@ const isAuth = async (req, res, next) => {
         return res.redirect('/user/login');
     }
     
-    const { email, id } = await decodeToken(token);
-    req.user = { email, id };
+    await decodeTokenAndSetUserData(token, req);
     next();
 }
 
@@ -47,14 +46,54 @@ const setAuthToken = async (req, res, next) => {
         return next();
     }
 
-    const { email, id } = await decodeToken(token);
-    req.user = { email, id };
+    await decodeTokenAndSetUserData(token, req);
 
     next();
+}
+
+const isAdmin = async (req, res, next) => {
+    const token = await getToken(req);
+
+    if(!token) {
+        return res.redirect('/');
+    }
+    
+    const user = await decodeTokenAndSetUserData(token, req);
+
+    if(user.claim === 'admin') {
+        req.user.claim = 'admin';
+        return next();
+    }
+
+    res.redirect('/');
+}
+
+const getToken = async (req) => {
+    const token = req.session.token;
+
+    if(!token) {
+        return false;
+    }
+    
+    const isVerified = await verifyToken(token);
+
+    if(!isVerified) {
+        return false;
+    }
+
+    return token;
+}
+
+const decodeTokenAndSetUserData = async (token, req) => {
+    const { email, id, claim } = await decodeToken(token);
+    const user = { email, id, claim };
+    req.user = user;
+    return user;
 }
 
 module.exports = {
     isAuth,
     isNotAuth,
     setAuthToken,
+    isAdmin,
 }

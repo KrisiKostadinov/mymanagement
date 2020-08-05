@@ -12,6 +12,10 @@ const UserSchema = new Schema({
         type: String,
         required: true,
     },
+
+    claim: {
+        type: String
+    }
 });
 
 const User = model('User', UserSchema);
