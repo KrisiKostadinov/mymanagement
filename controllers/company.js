@@ -1,5 +1,6 @@
 const Company = require('../models/Company');
 const Product = require('../models/Product');
+const User = require('../models/User');
 
 module.exports = {
     get: {
@@ -52,6 +53,15 @@ module.exports = {
             const company = await Company.findOne({ _id: id });
 
             res.render('company/delete', { company, user });
+        },
+
+        async candidations(req, res) {
+            const { id } = req.params;
+            const user = req.user;
+            
+            const company = await Company.findOne({ _id: id });
+
+            res.render('company/candidations', { user, company });
         }
     },
 
@@ -59,8 +69,6 @@ module.exports = {
         async add(req, res) {
             const user = req.user;
             const { name, imageUrl, phoneNumber } = req.body;
-
-            console.log(user);
             
             if(!user) {
                 return res.redirect('/');
@@ -72,6 +80,11 @@ module.exports = {
                     imageUrl,
                     phoneNumber,
                     ownerId: req.user.id
+                });
+
+                
+                await User.findByIdAndUpdate(user.id, {
+                    claim: 'boss'
                 });
 
                 res.redirect('/company/my');

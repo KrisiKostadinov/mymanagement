@@ -21,7 +21,8 @@ mongoose.connect(uri, {
         User.create({
             email: 'admin@admin.com',
             passwordHash: hash,
-            claim: 'admin'
+            claim: 'admin',
+            city: 'Sofia'
         });
     }
 });
