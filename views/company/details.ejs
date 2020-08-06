@@ -31,8 +31,10 @@
 
 <a href="/product/all/<%=company._id%>">View products of the company</a>
 
-<form action="/worker/apply" method="POST">
-    <input type="hidden" value="<%=user.id%>" name="id">
-    <input type="hidden" value="<%=company._id%>" name="companyId">
-    <button type="submit">Apply</button>
-</form>
+<% if(user && user.claim !== 'worker' && user.claim !== 'boss' && user.claim !== 'admin') { %>
+    <form action="/worker/apply" method="POST">
+        <input type="hidden" value="<%=user.id%>" name="id">
+        <input type="hidden" value="<%=company._id%>" name="companyId">
+        <button type="submit">Apply</button>
+    </form>
+<% } %>

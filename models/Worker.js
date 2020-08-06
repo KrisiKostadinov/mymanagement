@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose');
 const { String, ObjectId } = Schema.Types;
 
 const WorkerSchema = new Schema({
-    name: {
+    fullName: {
         type: String,
         required: true,
     },

@@ -1,10 +1,37 @@
+<h2><%= company.name%></h2>
+<img src="<%=company.imageUrl%>" alt="">
+<% if(company.candidates.length > 0) { %>
 <table>
     <tr>
         <th>Email</th>
+        <th>First name</th>
+        <th>Sir name</th>
+        <th>Last name</th>
+        <th>City</th>
+        <th>Add worker</th>
+        <th>Remove worker</th>
     </tr>
     <% company.candidates.forEach(user => { %>
         <tr>
             <td><%= user.email%></td>
+            <td><%= user.firstName%></td>
+            <td><%= user.sirName%></td>
+            <td><%= user.lastName%></td>
+            <td><%= user.city%></td>
+            <td>
+                <form action="/company/addWorker/<%=company._id%>" method="POST">
+                    <input type="hidden" value="<%=user.email%>" name="email">
+                    <button type="submit">Add worker</button>
+                </form>
+            </td>
+            <td>
+                <form action="/company/removeWorker" method="POST">
+                    <button type="submit">Remove worker</button>
+                </form>
+            </td>
         </tr>
     <% }) %>
 </table>
+<% } else { %>
+    <h2>No candidates</h2>
+<% } %>

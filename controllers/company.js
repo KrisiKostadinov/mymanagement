@@ -1,6 +1,7 @@
 const Company = require('../models/Company');
 const Product = require('../models/Product');
 const User = require('../models/User');
+const Worker = require('../models/Worker');
 
 module.exports = {
     get: {
@@ -115,6 +116,27 @@ module.exports = {
             } catch(err) {
                 console.log(err);
             }
+        },
+
+        async addWorker(req, res) {
+            const { id } = req.params;
+            const user = req.user;
+            const data = req.body;
+
+            await Worker.create({
+                userId: user.id,
+                companyId: id,
+                fullName: `${data.firstName} ${data.sirName} ${data.lastName}`,
+            });
+
+            await Company.updateOne(
+                    { _id: id }, { $pull: { candidates: { email: data.email }}});
+
+            await User.updateOne({ email: data.email }, {
+                $set: { claim: 'worker' } 
+            });
+
+            res.redirect(`/company/candidations/${id}`);
         }
     },
 
