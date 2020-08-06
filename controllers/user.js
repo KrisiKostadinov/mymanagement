@@ -41,40 +41,47 @@ module.exports = {
         },
 
         async register(req, res) {
-            const user = req.body;
+            const { 
+                email,
+                password,
+                confirmPassword,
+                firstName,
+                sirName,
+                lastName,
+                city
+            } = req.body;
 
-            if(user.password !== user.confirmPassword || user.password == '') {
-                return res.render('user/register', { error: 'The passwords not match.', user: false, data: user });
+            if(password !== confirmPassword || password == '') {
+                return res.render('user/register', { error: 'The passwords not match.',
+                     user: false, data: { email, firstName, sirName, lastName, city } });
             }
 
             try {
                 const salt = await bcrypt.genSalt(10);
-                const hash = await bcrypt.hash(user.password, salt);
+                const hash = await bcrypt.hash(password, salt);
 
-                const persistedUser = await User.create({
-                    email: user.email,
-                    passwordHash: hash
+                const user = await User.create({
+                    email: email,
+                    passwordHash: hash,
+                    firstName: firstName,
+                    sirName: sirName,
+                    lastName: lastName,
+                    city: city,
                 });
 
-                const persistedUserInfo = await UserInfo.create({
-                    firstName: user.firstName,
-                    sirName: user.sirName,
-                    lastName: user.lastName,
-                    city: user.city,
-                });
-
-                console.log(persistedUserInfo);
-                
-                const token = await createToken(user.email, persistedUser._id);
+                const token = await createToken(user.email, user._id);
 
                 req.session.token = token;
                 
                 res.redirect('/');
             } catch(err) {
+                console.log(err);
                 if(err.code == '11000') {
-                    res.render('user/register', { error: 'This email already exists!', user: false, data: user });
+                    res.render('user/register', { error: 'This email already exists!',
+                         user: false, data: { email, firstName, sirName, lastName, city } });
                 } else {
-                    res.render('user/register', { error: 'Email and password fields is required!', user: false, data: user });
+                    res.render('user/register', { error: 'Email and password fields is required!',
+                         user: false, data: { email, firstName, sirName, lastName, city } });
                 }
             }
         }
