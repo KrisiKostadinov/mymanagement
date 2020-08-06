@@ -49,6 +49,8 @@ module.exports = {
                     sirName: user.sirName,
                     lastName: user.lastName,
                     city: user.city,
+                    phoneNumber: user.phoneNumber,
+                    userId: id,
                 } }
             });
 

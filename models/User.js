@@ -31,6 +31,10 @@ const UserSchema = new Schema({
 
     city: {
         type: String
+    },
+
+    phoneNumber: {
+        type: String
     }
 });
 

@@ -63,6 +63,18 @@ module.exports = {
             const company = await Company.findOne({ _id: id });
 
             res.render('company/candidations', { user, company });
+        },
+
+        async allWorkers(req, res) {
+            const user = req.user;
+            const { id } = req.params;
+
+            try {
+                const workers = await Worker.find({ companyId: id });
+                res.render('company/allWorkers', { user, workers, id });
+            } catch(err) {
+                console.log(err);
+            }
         }
     },
 
@@ -120,21 +132,27 @@ module.exports = {
 
         async addWorker(req, res) {
             const { id } = req.params;
-            const user = req.user;
             const data = req.body;
 
-            await Worker.create({
-                userId: user.id,
-                companyId: id,
-                fullName: `${data.firstName} ${data.sirName} ${data.lastName}`,
-            });
-
-            await Company.updateOne(
-                    { _id: id }, { $pull: { candidates: { email: data.email }}});
-
-            await User.updateOne({ email: data.email }, {
-                $set: { claim: 'worker' } 
-            });
+            try {
+                await Worker.create({
+                    userId: data.userId,
+                    companyId: id,
+                    fullName: `${data.firstName} ${data.sirName} ${data.lastName}`,
+                    email: data.email,
+                    phoneNumber: data.phoneNumber,
+                    city: data.city,
+                });
+    
+                await Company.updateOne(
+                        { _id: id }, { $pull: { candidates: { email: data.email }}});
+    
+                await User.updateOne({ email: data.email }, {
+                    $set: { claim: 'worker' } 
+                });
+            } catch(err) {
+                console.log(err);
+            }
 
             res.redirect(`/company/candidations/${id}`);
         }
@@ -159,6 +177,29 @@ module.exports = {
             }
 
             res.redirect('/');
+        },
+
+        async dismissWorker(req, res) {
+            const { id } = req.params;
+            const data = req.body;
+
+            try {
+                await Company.updateOne(
+                    { _id: id }, { $pull: { candidates: { email: data.email }}});
+            } catch(err) {
+                console.log(err);
+            }
+
+            res.redirect(`/company/candidations/${id}`);
+        },
+
+        async removeWorker(req, res) {
+            const { companyId, workerId } = req.body;
+
+            const removedWorker = await Worker.findByIdAndDelete(workerId);
+            await User.updateOne({ _id: removedWorker.userId }, { $set: { claim: '' }});
+
+            res.redirect(`/company/allWorkers/${companyId}`);
         }
     }
 }

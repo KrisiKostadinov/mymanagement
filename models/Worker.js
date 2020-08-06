@@ -19,6 +19,14 @@ const WorkerSchema = new Schema({
     userId: {
         type: ObjectId,
         ref: 'User'
+    },
+
+    phoneNumber: {
+        type: String
+    },
+
+    city: {
+        type: String
     }
 });
 

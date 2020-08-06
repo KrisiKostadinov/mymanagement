@@ -48,12 +48,13 @@ module.exports = {
                 firstName,
                 sirName,
                 lastName,
-                city
+                city,
+                phoneNumber
             } = req.body;
 
             if(password !== confirmPassword || password == '') {
                 return res.render('user/register', { error: 'The passwords not match.',
-                     user: false, data: { email, firstName, sirName, lastName, city } });
+                     user: false, data: { email, firstName, sirName, lastName, city, phoneNumber } });
             }
 
             try {
@@ -67,6 +68,7 @@ module.exports = {
                     sirName: sirName,
                     lastName: lastName,
                     city: city,
+                    phoneNumber,
                 });
 
                 const token = await createToken(user.email, user._id);
@@ -78,10 +80,10 @@ module.exports = {
                 console.log(err);
                 if(err.code == '11000') {
                     res.render('user/register', { error: 'This email already exists!',
-                         user: false, data: { email, firstName, sirName, lastName, city } });
+                         user: false, data: { email, firstName, sirName, lastName, city, phoneNumber } });
                 } else {
                     res.render('user/register', { error: 'Email and password fields is required!',
-                         user: false, data: { email, firstName, sirName, lastName, city } });
+                         user: false, data: { email, firstName, sirName, lastName, city, phoneNumber } });
                 }
             }
         }

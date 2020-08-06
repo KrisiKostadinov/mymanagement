@@ -1,0 +1,28 @@
+<% if(workers.length > 0) { %>
+    <table>
+        <tr>
+        <th>Full name</th>
+        <th>Email</th>
+        <th>Phone number</th>
+        <th>City</th>
+        <th>Remove worker</th>
+        </tr>
+        <% workers.forEach(worker => { %>
+            <tr>
+                <td><%= worker.fullName %></td>
+                <td><%= worker.email %></td>
+                <td><%= worker.phoneNumber %></td>
+                <td><%= worker.city %></td>
+                <td>
+                    <form action="/company/removeWorker?_method=DELETE" method="POST">
+                        <input type="hidden" value="<%=worker._id%>" name="workerId">
+                        <input type="hidden" value="<%=id%>" name="companyId">
+                        <button type="submit">Remove worker</button>
+                    </form>
+                </td>
+            </tr>
+        <% }) %>
+    </table>
+<% } else { %>
+    <h2>No workers in the company!</h2>
+<% } %>
