@@ -7,12 +7,14 @@ module.exports = {
     get: {
         async add(req, res) {
             const user = req.user;
+            const { companyId } = req.params;
 
             try {
                 const companies = await Company.find({ ownerId: user.id });
-                const workers = await Worker.find({ userId: user.id });
+                const workers = await Worker.find({ companyId: companyId });
                 const isValid = workers.length !== 0;
-                res.render('shop/add', { user, companies, workers, isValid, shop: { }, error: '' });
+                console.log(workers);
+                res.render('shop/add', { user, companies, workers, isValid, shop: { }, error: '', companyId });
             } catch(err) {
                 console.log(err);
             }

@@ -15,7 +15,7 @@
         <label for="workerId">Select worker</label>
         <select name="workerId" id="workerId">
             <% workers.forEach(worker => { %>
-                <option value="<%=worker._id%>"><%= worker.name%></option>    
+                <option value="<%=worker._id%>"><%= worker.fullName%></option>    
             <% }) %>
         </select>
         <button type="submit">Create shop</button>
@@ -23,5 +23,5 @@
 <% } %>
 <% if(!isValid) { %>
     <p>Dot be added shop because uot do not workers!</p>
-    <a href="/worker/add">Add worker</a>
+    <a href="/company/allWorkers/<%=companyId%>">Add worker</a>
 <% } %>

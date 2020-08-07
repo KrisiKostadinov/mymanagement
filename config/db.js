@@ -21,12 +21,7 @@ mongoose.connect(uri, {
         User.create({
             email: process.env.ADMIN_EMAIL,
             passwordHash: hash,
-<<<<<<< HEAD
             claim: process.env.ADMIN_CLAIM
-=======
-            claim: 'admin',
-            city: 'Sofia'
->>>>>>> worker
         });
     }
 });

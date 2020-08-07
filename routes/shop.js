@@ -3,7 +3,7 @@ const { shop } = require('../controllers');
 
 const auth = require('../config/auth');
 
-router.get('/add', auth.isAuth, auth.setAuthToken, shop.get.add);
+router.get('/add/:companyId', auth.isAuth, auth.setAuthToken, shop.get.add);
 router.get('/edit/:id', auth.isAuth, auth.setAuthToken, shop.get.edit);
 router.get('/delete/:id', auth.isAuth, auth.setAuthToken, shop.get.deleteById);
 router.get('/details/:id', auth.isAuth, auth.setAuthToken, shop.get.byId);
