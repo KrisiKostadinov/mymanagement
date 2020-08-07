@@ -1,9 +1,29 @@
+<% if(error) { %>
+    <p><%= error %></p>
+<% } %>
 <form action="/user/register" method="POST">
     <label for="email">Email</label>
-    <input type="text" id="email" autofocus name="email">
+    <input type="text" id="email" autofocus value="<%=data.email%>" name="email">
+    <br>
     <label for="password">Password</label>
     <input type="password" name="password">
+    <br>
     <label for="confirmPassword">Confirm password</label>
-    <input type="password" id="confirmPassword" name="confirmPassword">
+    <input type="password" name="confirmPassword">
+    <br>
+    <label for="firstName">First Name</label>
+    <input type="text" id="firstName" name="firstName" value="<%=data.firstName%>">
+    <br>
+    <label for="sirName">Sir name</label>
+    <input type="text" id="sirName" name="sirName" value="<%=data.sirName%>">
+    <br>
+    <label for="lastName">Last name</label>
+    <input type="text" id="lastName" name="lastName" value="<%=data.lastName%>">
+    <br>
+    <label for="city">City</label>
+    <input type="text" id="city" name="city" value="<%=data.city%>">
+    <br>
+    <label for="phoneNumber">Phone number</label>
+    <input type="text" id="phoneNumber" name="phoneNumber" value="<%=data.phoneNumber%>">
     <button>Register</button>
 </form>

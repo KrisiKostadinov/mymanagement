@@ -1,0 +1,45 @@
+<h2><%= company.name%></h2>
+<a href="/company/allWorkers/<%=company._id%>">Show all workers</a>
+<img src="<%=company.imageUrl%>" alt="">
+<% if(company.candidates.length > 0) { %>
+<table>
+    <tr>
+        <th>Email</th>
+        <th>First name</th>
+        <th>Sir name</th>
+        <th>Last name</th>
+        <th>City</th>
+        <th>Add worker</th>
+        <th>Remove worker</th>
+    </tr>
+    <% company.candidates.forEach(user => { %>
+        <tr>
+            <td><%= user.email%></td>
+            <td><%= user.firstName%></td>
+            <td><%= user.sirName%></td>
+            <td><%= user.lastName%></td>
+            <td><%= user.city%></td>
+            <td>
+                <form action="/company/addWorker/<%=company._id%>" method="POST">
+                    <input type="hidden" value="<%=user.email%>" name="email">
+                    <input type="hidden" value="<%=user.firstName%>" name="firstName">
+                    <input type="hidden" value="<%=user.sirName%>" name="sirName">
+                    <input type="hidden" value="<%=user.lastName%>" name="lastName">
+                    <input type="hidden" value="<%=user.phoneNumber%>" name="phoneNumber">
+                    <input type="hidden" value="<%=user.city%>" name="city">
+                    <input type="hidden" value="<%=user.userId%>" name="userId">
+                    <button type="submit">Add worker</button>
+                </form>
+            </td>
+            <td>
+                <form action="/company/dismissWorker/<%=company._id%>?_method=DELETE" method="POST">
+                    <input type="hidden" value="<%=user.email%>" name="email">
+                    <button type="submit">Dismiss worker</button>
+                </form>
+            </td>
+        </tr>
+    <% }) %>
+</table>
+<% } else { %>
+    <h2>No candidates</h2>
+<% } %>

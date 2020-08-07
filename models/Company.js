@@ -18,7 +18,9 @@ const CompanySchema = new Schema({
     ownerId: {
         type: ObjectId,
         ref: 'User'
-    }
+    },
+
+    candidates: []
 });
 
 const Company = model('Company', CompanySchema);

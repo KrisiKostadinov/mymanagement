@@ -18,8 +18,12 @@ module.exports = {
             
             const products = await Product.find({ companyId: companyId });
             const company = await Company.findOne({ _id: companyId });
+
+            const isMyCompany = user.id.toString() === company.ownerId.toString();
             
-            res.render('product/all', { user, error: '', products, company });
+            console.log(isMyCompany);
+            
+            res.render('product/all', { user, error: '', products, company, isMyCompany });
         },
 
         async edit(req, res) {

@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose');
 const { String, ObjectId } = Schema.Types;
 
 const WorkerSchema = new Schema({
-    name: {
+    fullName: {
         type: String,
         required: true,
     },
@@ -19,6 +19,14 @@ const WorkerSchema = new Schema({
     userId: {
         type: ObjectId,
         ref: 'User'
+    },
+
+    phoneNumber: {
+        type: String
+    },
+
+    city: {
+        type: String
     }
 });
 

@@ -3,6 +3,9 @@
     <% companies.forEach(company => { %>
         <li>
             <a href="/company/<%=company._id%>"><%= company.name %></a>
+            <% if(user.claim === 'boss') { %>
+                <a href="/company/candidations/<%=company._id%>">Show candidations</a>
+            <% } %>
         </li>
     <% }) %>
 </ul>

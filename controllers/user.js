@@ -1,17 +1,16 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
+const UserInfo = require('../models/UserInfo');
 const { createToken } = require('../utils/jwt');
 
 module.exports = {
     get: {
         login(req, res) {
-            const user = req.user;
-            res.render('user/login', { user, error: '' });
+            res.render('user/login', { user: false, data: false, error: '' });
         },
 
         register(req, res) {
-            const user = req.user;
-            res.render('user/register', { user, error: '' });
+            res.render('user/register', { user: false, data: false, error: '' });
         },
 
         logout(req, res) {
@@ -38,29 +37,55 @@ module.exports = {
                 return res.redirect('/');
             }
             
-            res.render('user/login', { user: null, error: 'The password or email is wrong.' });
+            res.render('user/login', { user: false, data: user, error: 'The password or email is wrong.' });
         },
 
         async register(req, res) {
-            const { email, password, confirmPassword } = req.body;
+            const { 
+                email,
+                password,
+                confirmPassword,
+                firstName,
+                sirName,
+                lastName,
+                city,
+                phoneNumber
+            } = req.body;
 
-            if(password !== confirmPassword) {
-                return res.render('register', { error: 'The passwords not match.' });
+            if(password !== confirmPassword || password == '') {
+                return res.render('user/register', { error: 'The passwords not match.',
+                     user: false, data: { email, firstName, sirName, lastName, city, phoneNumber } });
             }
 
-            const salt = await bcrypt.genSalt(10);
-            const hash = await bcrypt.hash(password, salt);
+            try {
+                const salt = await bcrypt.genSalt(10);
+                const hash = await bcrypt.hash(password, salt);
 
-            const user = await User.create({
-                email,
-                passwordHash: hash
-            });
-            
-            const token = await createToken(email, user._id);
+                const user = await User.create({
+                    email: email,
+                    passwordHash: hash,
+                    firstName: firstName,
+                    sirName: sirName,
+                    lastName: lastName,
+                    city: city,
+                    phoneNumber,
+                });
 
-            req.session.token = token;
-            
-            res.redirect('/');
+                const token = await createToken(user.email, user._id);
+
+                req.session.token = token;
+                
+                res.redirect('/');
+            } catch(err) {
+                console.log(err);
+                if(err.code == '11000') {
+                    res.render('user/register', { error: 'This email already exists!',
+                         user: false, data: { email, firstName, sirName, lastName, city, phoneNumber } });
+                } else {
+                    res.render('user/register', { error: 'Email and password fields is required!',
+                         user: false, data: { email, firstName, sirName, lastName, city, phoneNumber } });
+                }
+            }
         }
     }
 }

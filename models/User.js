@@ -15,6 +15,26 @@ const UserSchema = new Schema({
 
     claim: {
         type: String
+    },
+
+    firstName: {
+        type: String
+    },
+
+    sirName: {
+        type: String
+    },
+
+    lastName: {
+        type: String
+    },
+
+    city: {
+        type: String
+    },
+
+    phoneNumber: {
+        type: String
     }
 });
 

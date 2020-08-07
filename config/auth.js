@@ -68,6 +68,23 @@ const isAdmin = async (req, res, next) => {
     res.redirect('/');
 }
 
+const isBoss = async (req, res, next) => {
+    const token = await getToken(req);
+
+    if(!token) {
+        return res.redirect('/');
+    }
+    
+    const user = await decodeTokenAndSetUserData(token, req);
+
+    if(user.claim === 'boss') {
+        req.user.claim = 'boss';
+        return next();
+    }
+
+    res.redirect('/');
+}
+
 const getToken = async (req) => {
     const token = req.session.token;
 
@@ -96,4 +113,5 @@ module.exports = {
     isNotAuth,
     setAuthToken,
     isAdmin,
+    isBoss,
 }
