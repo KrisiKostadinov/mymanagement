@@ -6,8 +6,8 @@ const createToken = async (email, id, claim = null) => {
             email,
             id,
             claim
-        }, 'secret', {
-            expiresIn: '60s',
+        }, process.env.SECRET, {
+            expiresIn: process.env.EXPIRES_IN,
         });
 
         return token;
@@ -27,7 +27,7 @@ const decodeToken = async (token) => {
 
 const verifyToken = async (token) => {
     try {
-        const verifiedToken = await jwt.verify(token, 'secret');
+        const verifiedToken = await jwt.verify(token, process.env.SECRET);
         return verifiedToken;
     } catch(err) {
         console.log(err);

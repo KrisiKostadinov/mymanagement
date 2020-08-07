@@ -16,12 +16,12 @@ mongoose.connect(uri, {
 
     if(users.length === 0) {
         const salt = await bcrypt.genSalt(10);
-        const hash = await bcrypt.hash('123456', salt);
+        const hash = await bcrypt.hash(process.env.ADMIN_PASSWORD, salt);
 
         User.create({
-            email: 'admin@admin.com',
+            email: process.env.ADMIN_EMAIL,
             passwordHash: hash,
-            claim: 'admin'
+            claim: process.env.ADMIN_CLAIM
         });
     }
 });
