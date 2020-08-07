@@ -5,7 +5,7 @@
         <th>Email</th>
         <th>Phone number</th>
         <th>City</th>
-        <th>Remove worker</th>
+        <th>Actions</th>
         </tr>
         <% workers.forEach(worker => { %>
             <tr>
@@ -19,6 +19,9 @@
                         <input type="hidden" value="<%=id%>" name="companyId">
                         <button type="submit">Remove worker</button>
                     </form>
+                </td>
+                <td>
+                    <a href="/order/all">Show orders</a>
                 </td>
             </tr>
         <% }) %>
