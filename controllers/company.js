@@ -75,6 +75,16 @@ module.exports = {
             } catch(err) {
                 console.log(err);
             }
+        },
+
+        async companyWorks(req, res) {
+            const user = req.user;
+            
+            const worker = await Worker.findOne({ userId: user.id });
+            const company = await Company.findOne({ _id: worker.companyId });
+            const products = await Product.find({ companyId: company.id });
+
+            res.render('company/companyWorks', { user, company, products });
         }
     },
 

@@ -1,6 +1,5 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
-const UserInfo = require('../models/UserInfo');
 const { createToken } = require('../utils/jwt');
 
 module.exports = {

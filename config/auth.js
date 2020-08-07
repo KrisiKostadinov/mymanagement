@@ -60,8 +60,8 @@ const isAdmin = async (req, res, next) => {
     
     const user = await decodeTokenAndSetUserData(token, req);
 
-    if(user.claim === 'admin') {
-        req.user.claim = 'admin';
+    if(user.claim === process.env.ADMIN_CLIAM) {
+        req.user.claim = process.env.ADMIN_CLIAM;
         return next();
     }
 
@@ -77,8 +77,25 @@ const isBoss = async (req, res, next) => {
     
     const user = await decodeTokenAndSetUserData(token, req);
 
-    if(user.claim === 'boss') {
-        req.user.claim = 'boss';
+    if(user.claim === process.env.BOSS_CLIAM) {
+        req.user.claim = process.env.BOSS_CLIAM;
+        return next();
+    }
+
+    res.redirect('/');
+}
+
+const isWorker = async (req, res, next) => {
+    const token = await getToken(req);
+
+    if(!token) {
+        return res.redirect('/');
+    }
+    
+    const user = await decodeTokenAndSetUserData(token, req);
+
+    if(user.claim === process.env.WORKER_CLAIM) {
+        req.user.claim = process.env.WORKER_CLAIM;
         return next();
     }
 
@@ -114,4 +131,5 @@ module.exports = {
     setAuthToken,
     isAdmin,
     isBoss,
+    isWorker,
 }

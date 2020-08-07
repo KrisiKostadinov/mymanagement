@@ -1,0 +1,14 @@
+<h2><%=company.name%></h2>
+<img src="<%=company.imageUrl%>" alt="<%=company.name%>">
+<h2>All products in the company</h2>
+<% if(products.length > 0) { %>
+    <ul>
+        <% products.forEach(product => { %>
+            <li>
+                <a href="#"><%= product.name%></a>
+            </li>
+        <% }) %>
+    </ul>
+<% } else { %>
+    <p>No products in the company</p>
+<% } %>
