@@ -12,6 +12,8 @@ const app = express();
 const port = process.env.PORT || 3000;
 const env = process.env.env;
 
+app.use(express.static("public"));
+
 app.use(methodOverride('_method'));
 app.use(expressLayouts);
 app.set('view engine', 'ejs');

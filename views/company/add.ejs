@@ -1,12 +1,21 @@
-<% if(error) { %>
-    <p><%= error %></p>
-<% } %>
-<form action="/company/add" method="POST">
-    <label for="name">Name</label>
-    <input type="text" id="name" autofocus name="name">
-    <label for="imageUrl">Image</label>
-    <input type="text" id="imageUrl" name="imageUrl">
-    <label for="phoneNumber">Phone number</label>
-    <input type="number" id="phoneNumber" name="phoneNumber">
-    <button type="submit">Create company</button>
-</form>
+<div class="col-md-6 mt-4 mx-auto">
+    <% if(error) { %>
+        <p><%= error %></p>
+    <% } %>
+    <h2>Create company</h2>
+    <form action="/company/add" method="POST">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input class="form-control" type="text" id="name" autofocus name="name">
+        </div>
+        <div class="form-group">
+            <label for="imageUrl">Image</label>
+            <input class="form-control" type="text" id="imageUrl" name="imageUrl">
+        </div>
+        <div class="form-group">
+            <label for="phoneNumber">Phone number</label>
+            <input class="form-control" type="number" id="phoneNumber" name="phoneNumber">
+        </div>
+        <button type="submit" class="btn btn-primary">Create company</button>
+    </form>
+</div>

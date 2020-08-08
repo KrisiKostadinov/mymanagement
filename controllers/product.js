@@ -39,8 +39,10 @@ module.exports = {
         async byId(req, res) {
             const user = req.user;
             const { id } = req.params;
-
+            
             const product = await Product.findOne({ _id: id });
+            
+            console.log(product);
 
             let isMyProduct = false;
             if(user) {

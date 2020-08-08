@@ -40,7 +40,8 @@ module.exports = {
 
             try {
                 const shop = await Shop.findById(id);
-                const isMyShop = companyId === shop.companyId;
+                const isMyShop = companyId.toString() === shop.companyId.toString();
+                console.log(isMyShop, companyId, shop.companyId);
                 res.render('shop/details', { shop, user, isMyShop });
             } catch(err) {
                 console.log(err);
@@ -52,10 +53,12 @@ module.exports = {
             const companyId = req.params.companyId;
 
             try {
-                const shops = await Shop.find({ companyId: companyId }) || [];
-                const company = await Company.findOne({ _id: companyId }) || { };
+                const shops = await Shop.find({ companyId: companyId });
+                const company = await Company.findOne({ _id: companyId });
                 
-                res.render('shop/all', { shops, user, company });
+                console.log(shops, company);
+                
+                res.render('shop/all', { company, shops, user });
             } catch(err) {
                 console.log(err);
             }

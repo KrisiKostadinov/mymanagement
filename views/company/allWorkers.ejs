@@ -1,14 +1,15 @@
 <% if(workers.length > 0) { %>
-    <table>
-        <tr>
-        <th>Full name</th>
-        <th>Email</th>
-        <th>Phone number</th>
-        <th>City</th>
-        <th>Actions</th>
+    <h2 class="text-center">All workers in the company</h2>
+    <table class="table table-bordered my-4">
+        <tr class="text-center">
+            <th>Full name</th>
+            <th>Email</th>
+            <th>Phone number</th>
+            <th>City</th>
+            <th colspan="2">Actions</th>
         </tr>
         <% workers.forEach(worker => { %>
-            <tr>
+            <tr class="text-center">
                 <td><%= worker.fullName %></td>
                 <td><%= worker.email %></td>
                 <td><%= worker.phoneNumber %></td>
@@ -17,15 +18,19 @@
                     <form action="/company/removeWorker?_method=DELETE" method="POST">
                         <input type="hidden" value="<%=worker._id%>" name="workerId">
                         <input type="hidden" value="<%=id%>" name="companyId">
-                        <button type="submit">Remove worker</button>
+                        <button class="btn text-danger" type="submit">Remove worker</button>
                     </form>
                 </td>
                 <td>
-                    <a href="/order/all">Show orders</a>
+                    <a class="btn" href="/order/all">Show orders</a>
                 </td>
             </tr>
         <% }) %>
     </table>
 <% } else { %>
-    <h2>No workers in the company!</h2>
+    <div class="col-md-6 mx-auto text-center">
+        <div class="alert alert-info">
+            <h2>No workers in the company!</h2>
+        </div>
+    </div>
 <% } %>

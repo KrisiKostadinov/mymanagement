@@ -1,9 +1,18 @@
 <h2>All shops - <%=company.name%></h2>
-<ul>
-    <% shops.forEach(shop => { %>
-        <li>
-            <a href="/shop/<%=shop._id%>/<%=company._id%>"><%= shop.address %></a>
-        </li>
-    <% }) %>
-</ul>
-<a href="/shop/add/<%=company._id%>">Add shop</a>
+<div class="col-md-6 mx-auto my-4">
+    <table class="table table-bordered">
+        <tr>
+            <th>Number</th>
+            <th scope="col">Address</th>
+        </tr>
+        <% shops.forEach((shop, index) => { %>
+        <tr>
+            <td><%= index %></td>
+            <td>
+                <a href="/shop/<%=shop._id%>/<%=company._id%>"><%= shop.address %></a>
+            </td>
+        </tr>
+        <% }) %>
+    </table>
+    <a href="/shop/add/<%=company._id%>">Add shop</a>
+</div>

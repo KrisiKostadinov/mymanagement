@@ -16,6 +16,8 @@ module.exports = {
             
             const companies = await Company.find();
 
+            console.log(companies);
+
             res.render('company/all', { user, error: '', companies });
         },
 
@@ -32,10 +34,11 @@ module.exports = {
             const { id } = req.params;
 
             const company = await Company.findOne({ _id: id });
+            const owner = await User.findOne({ _id: company.ownerId });
 
             const isMyCompany = company.ownerId == user.id;
 
-            res.render('company/details', { user, error: '', company, isMyCompany });
+            res.render('company/details', { user, error: '', company, isMyCompany, owner });
         },
 
         async edit(req, res) {
@@ -196,6 +199,7 @@ module.exports = {
             try {
                 await Company.updateOne(
                     { _id: id }, { $pull: { candidates: { email: data.email }}});
+                await User.updateOne({ email: data.email }, { $set: { claim: null }});
             } catch(err) {
                 console.log(err);
             }
@@ -207,7 +211,7 @@ module.exports = {
             const { companyId, workerId } = req.body;
 
             const removedWorker = await Worker.findByIdAndDelete(workerId);
-            await User.updateOne({ _id: removedWorker.userId }, { $set: { claim: '' }});
+            await User.updateOne({ _id: removedWorker.userId }, { $set: { claim: null }});
 
             res.redirect(`/company/allWorkers/${companyId}`);
         }

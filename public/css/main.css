@@ -1,0 +1,16 @@
+img {
+    width: 100px;
+    height: 100px;
+}
+
+.nav-right {
+    margin-left: auto;
+}
+
+.nav-left {
+    margin-right: auto;
+}
+
+.cursor-p {
+    cursor: pointer;
+}

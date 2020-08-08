@@ -1,14 +1,23 @@
 <h2><%=company.name%></h2>
-<img src="<%=company.imageUrl%>" alt="<%=company.name%>">
-<h2>All products in the company</h2>
-<% if(products.length > 0) { %>
-    <ul>
-        <% products.forEach(product => { %>
-            <li>
-                <a href="#"><%= product.name%></a>
-            </li>
-        <% }) %>
-    </ul>
-<% } else { %>
-    <p>No products in the company</p>
-<% } %>
+<div class="row">
+    <div class="col-md-4">
+        <img class="w-100" src="<%=company.imageUrl%>" alt="<%=company.name%>">
+    </div>
+    <div class="col-md-6">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2>All products in the company</h2>
+            <a class="btn btn-primary" href="/order/add">Order</a>
+        </div>
+        <% if(products.length > 0) { %>
+            <ul class="list-group">
+                <% products.forEach(product => { %>
+                    <li class="list-group-item">
+                        <a href="/product/<%=product._id%>"><%= product.name%></a>
+                    </li>
+                <% }) %>
+            </ul>
+        <% } else { %>
+            <p>No products in the company</p>
+        <% } %>
+    </div>
+</div>

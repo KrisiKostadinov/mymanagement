@@ -1,16 +1,26 @@
-<h2>Edit product</h2>
-<form action="/product/edit/<%=product._id%>" method="POST">
-    <label for="name">Name</label>
-    <input type="text" id="name" autofocus value="<%=product.name%>" name="name">
-    <label for="imageUrl">Image</label>
-    <input type="text" id="imageUrl" value="<%=product.imageUrl%>" name="imageUrl">
-    <label for="bestDays">Best days in number</label>
-    <input type="number" id="bestDays" value="<%=product.bestDays%>" name="bestDays">
-    <label for="companyId">Select company</label>
-    <select name="companyId" id="companyId">
-        <% companies.forEach(company => { %>
-            <option value="<%=company._id%>"><%= company.name%></option>    
-        <% }) %>
-    </select>
-    <button type="submit">Eidt product</button>
-</form>
+<div class="col-md-6 mx-auto">
+    <h2>Edit product</h2>
+    <form action="/product/edit/<%=product._id%>" method="POST">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input class="form-control" type="text" id="name" autofocus value="<%=product.name%>" name="name">
+        </div>
+        <div class="form-group">
+            <label for="imageUrl">Image</label>
+            <input class="form-control" type="text" id="imageUrl" value="<%=product.imageUrl%>" name="imageUrl">
+        </div>
+        <div class="form-group">
+            <label for="bestDays">Best days in number</label>
+            <input class="form-control" type="number" id="bestDays" value="<%=product.bestDays%>" name="bestDays">
+        </div>
+        <div class="form-group">
+            <label for="companyId">Select company</label>
+            <select class="form-control" name="companyId" id="companyId">
+                <% companies.forEach(company => { %>
+                <option value="<%=company._id%>"><%= company.name%></option>
+                <% }) %>
+            </select>
+        </div>
+        <button class="btn btn-primary" type="submit">Eidt product</button>
+    </form>
+</div>

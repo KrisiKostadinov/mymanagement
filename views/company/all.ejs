@@ -1,8 +1,10 @@
-<h2>All companiess</h2>
-<ul>
-    <% companies.forEach(company => { %>
-        <li>
-            <a href="/company/<%=company._id%>"><%= company.name %></a>
-        </li>
-    <% }) %>
-</ul>
+<div class="col-md-6 my-4 mx-auto">
+    <h2>All companies</h2>
+    <div class="list-group">
+        <% companies.forEach(company => { %>
+            <a class="list-group-item list-group-item-action" href="/company/<%=company._id%>">
+                <span><%= company.name %></span>
+            </a>
+        <% }) %>
+    </div>
+</div>

@@ -27,6 +27,10 @@ const WorkerSchema = new Schema({
 
     city: {
         type: String
+    },
+
+    email: {
+        type: String
     }
 });
 

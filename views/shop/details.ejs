@@ -1,12 +1,22 @@
-<table>
-    <tr>
-        <th>Address</th>
-    </tr>
-    <tr>
-        <td><%=shop.address%></td>
-    </tr>
-</table>
-<% if(user) { %>
-    <a href="/shop/edit/<%=shop._id%>">Edit</a>
-    <a href="/shop/delete/<%=shop._id%>">Dismiss</a>
-<% } %>
+<div class="col-md-6 mx-auto my-4">
+    <table class="table table-bordered">
+        <tr>
+            <th>Address</th>
+        </tr>
+        <tr>
+            <td><%=shop.address%></td>
+        </tr>
+    </table>
+    <% if(isMyShop) { %>
+    <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Shop
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="/shop/edit/<%=shop._id%>">Edit</a>
+            <a class="dropdown-item text-danger" href="/shop/delete/<%=shop._id%>">Dismiss</a>
+        </div>
+    </div>
+    <% } %>
+</div>

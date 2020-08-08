@@ -27,6 +27,10 @@ module.exports = {
                     userId: id,
                 } }
             });
+            
+            await User.findByIdAndUpdate(id, {
+                $set: { claim: 'pending' }
+            });
 
             req.session.company = company;
             req.session.user = user;

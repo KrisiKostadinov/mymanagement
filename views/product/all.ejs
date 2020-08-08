@@ -1,16 +1,19 @@
-<h2>All products - <%=company.name%></h2>
-<% if(products.length > 0) { %>
-    <ul>
-        <% products.forEach(product => { %>
-            <li>
-                <a href="/product/<%=product._id%>"><%= product.name %></a>
-                <img src="<%= product.imageUrl %>">
-            </li>
-        <% }) %>
-    </ul>
-<% } else { %>
-    <p>No products in this company</p>
+<div class="d-flex justify-content-md-between align-items-center">
+    <h2>All products - <%=company.name%></h2>
     <% if(isMyCompany) { %>
-        <a href="/product/add">Add product</a>
+    <a class="btn btn-primary" href="/product/add">Add product</a>
     <% } %>
-<% } %>
+</div>
+<div class="row">
+    <% products.forEach(product => { %>
+    <div class="col-md-6">
+        <div class="card my-2">
+            <a class="p-2" href="/product/<%=product._id%>"><%= product.name %></a>
+            <img class="w-100" src="<%= product.imageUrl %>">
+        </div>
+    </div>
+    <% }) %>
+    <% if(products.length === 0) { %>
+        <p>No products in this company</p>
+    <% } %>
+</div>

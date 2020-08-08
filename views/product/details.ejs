@@ -1,22 +1,20 @@
-<table>
-    <tr>
-        <th>Name</th>
-        <th>Image</th>
-        <th>Best days</th>
-    </tr>
-    <tr>
-        <td><%=product.name%></td>
-        <td>
-            <img src="<%=product.imageUrl%>" alt="<%=product.name%>">
-        </td>
-        <td><%=product.bestDays%></td>
-    </tr>
-</table>
-<% if(isMyProduct) { %>
-    <a href="/product/edit/<%=product._id%>">Edit</a>
-    <a href="/product/delete/<%=product._id%>">Dismiss</a>
-<% } %>
-
-<% if(!isMyProduct) { %>
-    <a href="/order/add">Order</a>
-<% } %>
+<div class="col-md-6 my-4 mx-auto">
+    <table class="table table-bordered">
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Image</th>
+            <th scope="col">Best days</th>
+        </tr>
+        <tr>
+            <td><%=product.name%></td>
+            <td>
+                <img class="w-100" src="<%=product.imageUrl%>" alt="<%=product.name%>">
+            </td>
+            <td><%=product.bestDays%></td>
+        </tr>
+    </table>
+    <% if(isMyProduct) { %>
+        <a href="/product/edit/<%=product._id%>">Edit</a>
+        <a href="/product/delete/<%=product._id%>">Dismiss</a>
+    <% } %>
+</div>
