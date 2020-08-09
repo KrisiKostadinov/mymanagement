@@ -13,7 +13,7 @@ router.get('/candidations/:id', auth.isBoss, company.get.candidations);
 router.get('/allWorkers/:id', auth.isBoss, company.get.allWorkers);
 router.get('/', auth.isWorker, company.get.companyWorks);
 
-router.post('/add', auth.isBoss, company.post.add);
+router.post('/add', auth.isAuth, company.post.add);
 router.post('/edit/:id', auth.isBoss, company.post.edit);
 router.post('/addWorker/:id', auth.isBoss, company.post.addWorker);
 

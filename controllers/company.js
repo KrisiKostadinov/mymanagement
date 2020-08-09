@@ -32,19 +32,19 @@ module.exports = {
         async byId(req, res) {
             const user = req.user;
             const { id } = req.params;
-
+            
             const company = await Company.findOne({ _id: id });
             const owner = await User.findOne({ _id: company.ownerId });
-
+            
             const isMyCompany = company.ownerId == user.id;
-
+            
             res.render('company/details', { user, error: '', company, isMyCompany, owner });
         },
-
+        
         async edit(req, res) {
             const user = req.user;
             const { id } = req.params;
-
+            
             const company = await Company.findOne({ _id: id });
 
             res.render(`company/edit`, { error: '', user, company });
@@ -94,20 +94,20 @@ module.exports = {
     post: {
         async add(req, res) {
             const user = req.user;
-            const { name, imageUrl, phoneNumber } = req.body;
+            const { name, imageUrl, phoneNumber, description } = req.body;
             
             if(!user) {
                 return res.redirect('/');
             }
-
+            
             try {
                 await Company.create({
                     name,
                     imageUrl,
                     phoneNumber,
-                    ownerId: req.user.id
+                    ownerId: req.user.id,
+                    description: description
                 });
-
                 
                 await User.findByIdAndUpdate(user.id, {
                     claim: 'boss'
@@ -122,11 +122,11 @@ module.exports = {
         async edit(req, res) {
             const user = req.user;
             const { id } = req.params;
-            const { name, phoneNumber, imageUrl } = req.body;
+            const { name, phoneNumber, imageUrl, description } = req.body;
     
             try {
                 const company = await Company.findOne({ _id: id, ownerId: user.id });
-
+                
                 if(company.ownerId != user.id) {
                     return res.redirect('/');
                 }
@@ -134,7 +134,8 @@ module.exports = {
                 await Company.findByIdAndUpdate(id, {
                     name,
                     phoneNumber,
-                    imageUrl
+                    imageUrl,
+                    description
                 });
     
                 res.redirect(`/company/${id}`);

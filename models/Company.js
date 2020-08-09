@@ -20,6 +20,10 @@ const CompanySchema = new Schema({
         ref: 'User'
     },
 
+    description: {
+        type: String
+    },
+
     candidates: []
 });
 
