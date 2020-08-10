@@ -18,6 +18,7 @@ app.use(methodOverride('_method'));
 app.use(expressLayouts);
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json({ limit: '1mb' }));
 
 app.use(session({
     secret: 'secret',
@@ -31,6 +32,7 @@ app.use('/company', require('./routes/company'));
 app.use('/product', require('./routes/product'));
 app.use('/shop', require('./routes/shop'));
 app.use('/worker', require('./routes/worker'));
+app.use('/order', require('./routes/order'));
 app.use('/admin', require('./routes/admin'));
 
 app.listen(port, () => console.log(`Server listening in ${env} on port: ` + port));

@@ -14,7 +14,8 @@
     "jsonwebtoken": "^8.5.1",
     "method-override": "^3.0.0",
     "mongoose": "^5.9.26",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "socket.io": "^2.3.0"
   },
   "devDependencies": {},
   "scripts": {

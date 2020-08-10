@@ -2,22 +2,25 @@ const { Schema, model } = require('mongoose');
 const { ObjectId } = Schema.Types;
 
 const OrderSchema = new Schema({
-    shopId: {
-        type: ObjectId,
-        ref: 'Shop'
-    },
+    products: [
+        {
+            companyId: {
+                type: ObjectId,
+                ref: 'Company'
+            },
+            count: Number,
+        }
+    ],
 
     workerId: {
         type: ObjectId,
         ref: 'Worker'
     },
 
-    products: [
-        {
-            type: ObjectId,
-            ref: 'Product'
-        }
-    ],
+    companyId: {
+        type: ObjectId,
+        ref: 'Compnay'
+    },
 
     createdAt: {
         type: Date,
@@ -26,7 +29,6 @@ const OrderSchema = new Schema({
 
     forWhen: {
         type: Date,
-        required: true,
     }
 });
 

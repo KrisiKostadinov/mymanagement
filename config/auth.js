@@ -120,10 +120,17 @@ const getToken = async (req) => {
 }
 
 const decodeTokenAndSetUserData = async (token, req) => {
-    const { email, id, claim } = await decodeToken(token);
+    const { email, id, claim, workerId, companyId } = await decodeToken(token);
+
     const user = { email, id, claim };
+    const worker = { workerId, companyId };
+    const company = { companyId };
+
     req.user = user;
-    console.log(user);
+    req.worker = worker;
+    req.company = company;
+    console.log(user, worker);
+
     return user;
 }
 

@@ -1,11 +1,16 @@
 const jwt = require('jsonwebtoken');
+const Worker = require('../models/Worker');
 
 const createToken = async (email, id, claim = null) => {
     try {
+        const worker = await Worker.findOne({ email: email });
+
         const token = await jwt.sign({
             email,
             id,
-            claim
+            claim,
+            workerId: worker ? worker._id : null,
+            companyId: worker ? worker.companyId : null,
         }, process.env.SECRET, {
             expiresIn: process.env.EXPIRES_IN,
         });
