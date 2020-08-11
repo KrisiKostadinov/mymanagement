@@ -14,6 +14,7 @@
         <th>Name</th>
         <th>Best days</th>
         <th>Count</th>
+        <th>Price</th>
         <th>Actions</th>
     </tr>
     <% products.forEach((product, index) => { %>
@@ -25,9 +26,18 @@
             <td class="w-25">
                 <input class="form-control" type="number" value="0" id="<%=index%>" min="0">
             </td>
+            <td><%=product.price%></td>
             <td>
                 <button disabled data-form-id="<%=product._id%>" button class="btn" type="button"
-                    onclick="checkProduct('<%=product._id%>', document.getElementById('<%=index%>').value)">Add
+                    onclick="checkProduct(
+                        {
+                            id: '<%=product._id%>',
+                            name: '<%=product.name%>',
+                            price: '<%=product.price%>',
+                            bestDays: '<%=product.bestDays%>',
+                            count: document.getElementById('<%=index%>').value,
+                        }
+                    )">Add
                     product</button>
             </td>
         </form>
@@ -35,8 +45,14 @@
     <% }) %>
 </table>
 
-<div class="text-center">
-    <button id="data-add-order" disabled class="btn btn-primary">Send order</button>
+<div>
+    <div class="text-right">
+        <h2 id="total-sum">Total sum: <span></span></h2>
+    </div>
+    <div class="text-center">
+        <button id="data-add-order" disabled class="btn btn-primary">Send order</button>
+        <a class="btn" href="/order/worker/all">Show all</a>
+    </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"

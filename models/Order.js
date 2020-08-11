@@ -2,15 +2,15 @@ const { Schema, model } = require('mongoose');
 const { ObjectId } = Schema.Types;
 
 const OrderSchema = new Schema({
-    products: [
-        {
-            companyId: {
-                type: ObjectId,
-                ref: 'Company'
-            },
-            count: Number,
-        }
-    ],
+    products: [],
+
+    totalSum: {
+        type: Number
+    },
+
+    status: {
+        type: String,
+    },
 
     workerId: {
         type: ObjectId,

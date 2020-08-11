@@ -17,6 +17,10 @@
             <input class="form-control" type="number" id="bestDays" value="<%=product.bestDays%>" name="bestDays">
         </div>
         <div class="form-group">
+            <label for="price">Price</label>
+            <input class="form-control" id="price" value="<%=product.price%>" name="price">
+        </div>
+        <div class="form-group">
             <label for="companyId">Select company</label>
             <select class="form-control" name="companyId" id="companyId">
                 <% companies.forEach(company => { %>

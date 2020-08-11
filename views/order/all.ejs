@@ -1,0 +1,33 @@
+<h2 class="text-center">Orders</h2>
+<% orders.forEach((order, index) => { %>
+<table class="table table-bordered text-center m-0">
+    <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Best days</th>
+        <th>Count</th>
+    </tr>
+    <% order.products.forEach(product => { %>
+    <tr>
+        <td><%= product.product.name %></td>
+        <td><%= product.product.price %></td>
+        <td><%= product.product.bestDays %></td>
+        <td><%= product.product.count %></td>
+    </tr>
+    <% }) %>
+</table>
+<div class="btn-group dropright">
+    <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false">
+        Options
+    </button>
+    <div class="dropdown-menu">
+        <a class="dropdown-item text-danger" href="#">Cancel order</a>
+        <div class="dropdown-divider"></div>
+        <h6 class="dropdown-header">Order details</h6>
+        <button class="dropdown-item">Total sum: <%= order.totalSum %></button>
+        <button class="dropdown-item">Order <%= index + 1 %></button>
+        <button class="dropdown-item">Status: <%= order.status %></button>
+    </div>
+</div>
+<% }) %>

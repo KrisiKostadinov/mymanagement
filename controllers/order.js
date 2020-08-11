@@ -17,6 +17,17 @@ module.exports = {
         success(req, res) {
             const user = req.user;
             res.render('order/success', { user });
+        },
+
+        async all(req, res) {
+            const user = req.user;
+            const { workerId } = req.worker;
+
+            const orders = await Order.find({ workerId: workerId });
+
+            console.log(orders[0].products);
+
+            res.render('order/all', { user, orders });
         }
     },
 
@@ -25,12 +36,14 @@ module.exports = {
             const { workerId } = req.worker;
             const { companyId } = req.company;
 
-            const { products } = req.body;
+            const { products, totalSum } = req.body;
 
             await Order.create({
                 companyId,
                 workerId,
-                products
+                products,
+                totalSum,
+                status: 'pending'
             });
 
             res.sendStatus(201);

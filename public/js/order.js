@@ -1,13 +1,21 @@
-function checkProduct(id, count) {
+function checkProduct(data) {
     const order = JSON.parse(localStorage.getItem('products')) || [];
-    const isExists = checkById(id, order, getProducts());
+    const isExists = checkById(data.id, order, getProducts());
 
     if (isExists) {
-        removeProduct(id);
+        removeProduct(data.id);
         return;
     }
 
-    addProduct(id, count);
+    addProduct(
+        data.id,
+        {
+            name: data.name,
+            price: data.price,
+            bestDays: data.bestDays,
+            count: data.count
+        });
+
     checkIsExists(JSON.parse(localStorage.getItem('products')));
 }
 
@@ -25,6 +33,7 @@ function removeProduct(id) {
     button.disabled = true;
 
     checkIsEmptyProducts(products);
+    totalSum(products);
 }
 
 function checkIsEmptyProducts(products) {
@@ -39,15 +48,17 @@ function checkIsEmptyProducts(products) {
     }
 }
 
-function addProduct(id, count) {
+function addProduct(id, product) {
     const order = JSON.parse(localStorage.getItem('products')) || [];
-    order.push({ id, count });
+    order.push({ id, product });
 
     var button = document.querySelector(`[data-form-id="${id}"]`);
     button.parentElement.parentElement.querySelector('input').disabled = true;
     localStorage.setItem('products', JSON.stringify(order));
 
     document.getElementById('data-add-order').disabled = false;
+
+    totalSum(order);
 }
 
 function getProducts() {
@@ -91,10 +102,13 @@ function checkIsExists(order) {
         } else {
             button.innerText = 'Remove product';
             button.style.color = 'red';
-            button.parentElement.parentElement.querySelector('input').value = products[i].count;
+            button.parentElement.parentElement.querySelector('input').value = products[i].product.count;
             button.disabled = false;
+            button.parentElement.parentElement.querySelector('input').disabled = true;
         }
     }
+
+    totalSum(order);
 }
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -122,7 +136,7 @@ $('#data-add-order').click(function () {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ products: products }),
+        body: JSON.stringify({ products: products, totalSum: totalSum(products) }),
     }).then((data) => {
         localStorage.clear();
         checkIsExists(JSON.parse(localStorage.getItem('products')) || []);
@@ -132,3 +146,15 @@ $('#data-add-order').click(function () {
         console.log(err);
     });
 });
+
+function totalSum(order) {
+    var totalSum = 0;
+
+    order.forEach(product => {
+        totalSum += Number(product.product.price) * Number(product.product.count);
+    });
+
+    document.querySelector('#total-sum span').innerText = totalSum;
+
+    return totalSum;
+}

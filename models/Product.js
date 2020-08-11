@@ -16,6 +16,11 @@ const ProductSchema = new Schema({
         required: true,
     },
 
+    price: {
+        type: String,
+        required: true,
+    },
+
     companyId: {
         type: ObjectId,
         ref: 'Company'
