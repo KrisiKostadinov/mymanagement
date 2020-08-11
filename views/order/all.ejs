@@ -1,4 +1,10 @@
-<h2 class="text-center">Orders</h2>
+<div class="row">
+    <h2 class="text-left col-md-6">Orders</h2>
+    <div class="text-right col-md-6">
+        <a class="btn btn-primary" href="/order/<%=companyId%>">Add order</a>
+    </div>
+</div>
+<% if(orders.length > 0) { %>
 <% orders.forEach((order, index) => { %>
 <table class="table table-bordered text-center m-0">
     <tr>
@@ -22,12 +28,27 @@
         Options
     </button>
     <div class="dropdown-menu">
-        <a class="dropdown-item text-danger" href="#">Cancel order</a>
+        <% if(order.status == 'pending') { %>
+        <form action="/order/worker/<%=order._id%>?_method=DELETE" method="POST">
+            <button class="dropdown-item" type="submit">Cnacel order</button>
+        </form>
         <div class="dropdown-divider"></div>
+        <% } %>
         <h6 class="dropdown-header">Order details</h6>
         <button class="dropdown-item">Total sum: <%= order.totalSum %></button>
         <button class="dropdown-item">Order <%= index + 1 %></button>
+        <% if(order.status == 'pending') { %>
         <button class="dropdown-item">Status: <%= order.status %></button>
+        <% } else { %>
+        <button class="dropdown-item">Status: <%= order.status %></button>
+        <% } %>
     </div>
 </div>
 <% }) %>
+<% } else { %>
+<div class="col-md-6 mx-auto text-center">
+    <div class="alert alert-info">
+        <h2>No orders now</h2>
+    </div>
+</div>
+<% } %>

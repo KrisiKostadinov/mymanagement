@@ -60,8 +60,7 @@ const isAdmin = async (req, res, next) => {
     
     const user = await decodeTokenAndSetUserData(token, req);
 
-    if(user.claim === process.env.ADMIN_CLIAM) {
-        req.user.claim = process.env.ADMIN_CLIAM;
+    if(user.claim === process.env.ADMIN_CLAIM) {
         return next();
     }
 
@@ -71,7 +70,6 @@ const isAdmin = async (req, res, next) => {
 const isBoss = async (req, res, next) => {
     const token = await getToken(req);
 
-    
     if(!token) {
         return res.redirect('/');
     }
@@ -125,11 +123,10 @@ const decodeTokenAndSetUserData = async (token, req) => {
     const user = { email, id, claim };
     const worker = { workerId, companyId };
     const company = { companyId };
-
+    
     req.user = user;
     req.worker = worker;
     req.company = company;
-    console.log(user, worker);
 
     return user;
 }

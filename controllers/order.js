@@ -22,12 +22,11 @@ module.exports = {
         async all(req, res) {
             const user = req.user;
             const { workerId } = req.worker;
+            const { companyId } = req.company;
 
             const orders = await Order.find({ workerId: workerId });
 
-            console.log(orders[0].products);
-
-            res.render('order/all', { user, orders });
+            res.render('order/all', { user, orders, companyId });
         }
     },
 
@@ -47,6 +46,16 @@ module.exports = {
             });
 
             res.sendStatus(201);
+        }
+    },
+
+    delete: {
+        async cancel(req, res) {
+            const orderId = req.params.orderId;
+
+            await Order.findByIdAndDelete({ _id: orderId, status: 'pending' });
+
+            res.redirect('/order/worker/all');
         }
     }
 }

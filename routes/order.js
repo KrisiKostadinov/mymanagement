@@ -9,4 +9,6 @@ router.get('/worker/all', auth.isWorker, order.get.all);
 
 router.post('/add', auth.isWorker, order.post.add);
 
+router.delete('/worker/:orderId', auth.isWorker, order.delete.cancel);
+
 module.exports = router;
