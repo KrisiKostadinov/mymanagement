@@ -54,9 +54,7 @@ const setAuthToken = async (req, res, next) => {
 const isAdmin = async (req, res, next) => {
     const token = await getToken(req);
 
-    if(!token) {
-        return res.redirect('/');
-    }
+    isValidToken(token, req, res, next);
     
     const user = await decodeTokenAndSetUserData(token, req);
 
@@ -70,9 +68,7 @@ const isAdmin = async (req, res, next) => {
 const isBoss = async (req, res, next) => {
     const token = await getToken(req);
 
-    if(!token) {
-        return res.redirect('/');
-    }
+    isValidToken(token, req, res, next);
     
     const user = await decodeTokenAndSetUserData(token, req);
     
@@ -87,13 +83,25 @@ const isBoss = async (req, res, next) => {
 const isWorker = async (req, res, next) => {
     const token = await getToken(req);
 
-    if(!token) {
-        return res.redirect('/');
-    }
+    isValidToken(token, req, res, next);
     
     const user = await decodeTokenAndSetUserData(token, req);
 
     if(user.claim === process.env.WORKER_CLAIM) {
+        return next();
+    }
+
+    res.redirect('/');
+}
+
+const isWorkerOrBoss = async (req, res, next) => {
+    const token = await getToken(req);
+
+    isValidToken(token, req, res, next);
+    
+    const user = await decodeTokenAndSetUserData(token, req);
+
+    if(user.claim === process.env.WORKER_CLAIM || user.claim === process.env.BOSS_CLAIM) {
         return next();
     }
 
@@ -137,6 +145,14 @@ const decodeTokenAndSetUserData = async (token, req) => {
     return user;
 }
 
+const isValidToken = (token, req, res, next) => {
+    if(!token) {
+        return res.redirect('/');
+    }
+
+    next();
+}
+
 module.exports = {
     isAuth,
     isNotAuth,
@@ -144,5 +160,6 @@ module.exports = {
     isAdmin,
     isBoss,
     isWorker,
+    isWorkerOrBoss,
     isMessages
 }

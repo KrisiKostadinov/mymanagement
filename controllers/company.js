@@ -16,8 +16,6 @@ module.exports = {
             
             const companies = await Company.find();
 
-            console.log(companies);
-
             res.render('company/all', { user, error: '', companies });
         },
 
@@ -110,7 +108,7 @@ module.exports = {
                 });
                 
                 await User.findByIdAndUpdate(user.id, {
-                    claim: 'boss'
+                    claim: process.env.BOSS_CLAIM
                 });
 
                 res.redirect('/company/my');
