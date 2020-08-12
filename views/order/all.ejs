@@ -1,9 +1,23 @@
+<% if(messages.success) { %>
+<div class="col-md-6 mx-auto text-center">
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <div><%= messages.success %></div>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</div>
+<% } %>
+<% if(isMyCompany) { %>
+<h2 class="text-center">Orders</h2>
+<% } else { %>
 <div class="row">
     <h2 class="text-left col-md-6">Orders</h2>
     <div class="text-right col-md-6">
         <a class="btn btn-primary" href="/order/<%=companyId%>">Add order</a>
     </div>
 </div>
+<% } %>
 <% if(orders.length > 0) { %>
 <% orders.forEach((order, index) => { %>
 <table class="table table-bordered text-center m-0">
@@ -29,10 +43,17 @@
     </button>
     <div class="dropdown-menu">
         <% if(order.status == 'pending') { %>
+        <% if(isMyCompany && order.status == 'pending') { %>
+        <form action="/order/company/<%=order._id%>" method="POST">
+            <input type="hidden" name="workerId" value="<%=order.workerId%>">
+            <button class="dropdown-item text-primary" type="submit">Confirm order</button>
+        </form>
+        <% } else if(order.status != 'confirm' && !order.isConfirmed) { %>
         <form action="/order/worker/<%=order._id%>?_method=DELETE" method="POST">
-            <button class="dropdown-item" type="submit">Cnacel order</button>
+            <button class="dropdown-item text-danger" type="submit">Cnacel order</button>
         </form>
         <div class="dropdown-divider"></div>
+        <% } %>
         <% } %>
         <h6 class="dropdown-header">Order details</h6>
         <button class="dropdown-item">Total sum: <%= order.totalSum %></button>
@@ -48,7 +69,7 @@
 <% } else { %>
 <div class="col-md-6 mx-auto text-center">
     <div class="alert alert-info">
-        <h2>No orders now</h2>
+        <h2>No pending orders now</h2>
     </div>
 </div>
 <% } %>

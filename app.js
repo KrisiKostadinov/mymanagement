@@ -3,6 +3,7 @@ const expressLayouts = require('express-ejs-layouts');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const methodOverride = require('method-override');
+var flash = require('connect-flash');
 
 require('dotenv').config();
 require('./config/db');
@@ -12,6 +13,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 const env = process.env.env;
 
+app.use(flash());
 app.use(express.static("public"));
 
 app.use(methodOverride('_method'));

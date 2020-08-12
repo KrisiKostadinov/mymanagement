@@ -94,7 +94,6 @@ const isWorker = async (req, res, next) => {
     const user = await decodeTokenAndSetUserData(token, req);
 
     if(user.claim === process.env.WORKER_CLAIM) {
-        req.user.claim = process.env.WORKER_CLAIM;
         return next();
     }
 
@@ -117,16 +116,23 @@ const getToken = async (req) => {
     return token;
 }
 
+const isMessages = (req, res, next) => {
+    res.locals.messages = req.flash();
+    req.flash('success', null);
+    next();
+}
+
 const decodeTokenAndSetUserData = async (token, req) => {
-    const { email, id, claim, workerId, companyId } = await decodeToken(token);
+    const { email, id, claim, workerId, company } = await decodeToken(token);
 
     const user = { email, id, claim };
-    const worker = { workerId, companyId };
-    const company = { companyId };
+    const worker = { workerId, companyId: company._id };
     
     req.user = user;
     req.worker = worker;
     req.company = company;
+
+    console.log(user);
 
     return user;
 }
@@ -138,4 +144,5 @@ module.exports = {
     isAdmin,
     isBoss,
     isWorker,
+    isMessages
 }

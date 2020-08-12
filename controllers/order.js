@@ -1,5 +1,6 @@
 const Product = require('../models/Product');
 const Order = require('../models/Order');
+const constants = require('../config/constants');
 
 module.exports = {
     get: {
@@ -10,7 +11,6 @@ module.exports = {
 
             const products = await Product.find({ companyId: companyId });
 
-            console.log(products, companyId, 0);
             res.render('order/add', { data, user, products });
         },
 
@@ -24,9 +24,24 @@ module.exports = {
             const { workerId } = req.worker;
             const { companyId } = req.company;
 
-            const orders = await Order.find({ workerId: workerId });
+            var orders = await Order.find({ workerId: workerId });
 
-            res.render('order/all', { user, orders, companyId });
+            orders.forEach(order => {
+                order.isConfirmed = order.status == constants.STATUS_CONFIRM;
+            });
+
+            res.render('order/all', { user, orders, companyId, isMyCompany: null });
+        },
+
+        async allInCompany(req, res) {
+            const user = req.user;
+            const { workerId } = req.params;
+            const { companyId, ownerId } = req.company;
+
+            const orders = await Order.find({ workerId: workerId });
+            const isMyCompany = user.id == ownerId;
+            
+            res.render('order/all', { user, orders, companyId, isMyCompany });
         }
     },
 
@@ -42,10 +57,22 @@ module.exports = {
                 workerId,
                 products,
                 totalSum,
-                status: 'pending'
+                status: constants.STATUS_PENDING
             });
 
             res.sendStatus(201);
+        },
+
+        async confirmOrder(req, res) {
+            const { orderId } = req.params;
+            const { workerId } = req.body;
+            
+            await Order.findByIdAndUpdate(orderId, {
+                $set: { status: constants.STATUS_CONFIRM }
+            });
+            
+            req.flash('success', 'The order is confirmed successfully!');
+            res.redirect('/order/company/all/' + workerId);
         }
     },
 
@@ -53,7 +80,7 @@ module.exports = {
         async cancel(req, res) {
             const orderId = req.params.orderId;
 
-            await Order.findByIdAndDelete({ _id: orderId, status: 'pending' });
+            await Order.findByIdAndDelete({ _id: orderId, status: constants.STATUS_PENDING });
 
             res.redirect('/order/worker/all');
         }
