@@ -29,6 +29,10 @@ const OrderSchema = new Schema({
 
     forWhen: {
         type: Date,
+    },
+
+    month: {
+        type: Number
     }
 });
 

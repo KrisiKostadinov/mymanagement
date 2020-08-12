@@ -36,27 +36,39 @@
     </tr>
     <% }) %>
 </table>
-<div class="btn-group dropright">
+<div class="btn-group">
     <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
         aria-expanded="false">
         Options
     </button>
-    <div class="dropdown-menu">
+    <div class="dropdown-menu dropdown-menu-right">
+        <% if(isMyCompany) { %>
+            <form action="/order/company/<%=order._id%>?_method=DELETE" method="POST">
+                <input type="hidden" name="workerId" value="<%=order.workerId%>">
+                <button class="dropdown-item text-danger" type="submit">Cancel order</button>
+            </form>
+        <% } %>
         <% if(order.status == 'pending') { %>
-        <% if(isMyCompany && order.status == 'pending') { %>
+        <% if(isMyCompany) { %>
         <form action="/order/company/<%=order._id%>" method="POST">
             <input type="hidden" name="workerId" value="<%=order.workerId%>">
             <button class="dropdown-item text-primary" type="submit">Confirm order</button>
         </form>
-        <% } else if(order.status != 'confirm' && !order.isConfirmed) { %>
+        <div class="dropdown-divider"></div>
+        <% } else if(order.status != 'confirm') { %>
         <form action="/order/worker/<%=order._id%>?_method=DELETE" method="POST">
             <button class="dropdown-item text-danger" type="submit">Cnacel order</button>
         </form>
+        <% } else if(order.status == 'confirm') { %>
+            <form action="/order/worker/<%=order._id%>?_method=DELETE" method="POST">
+                <button class="dropdown-item text-danger" type="submit">Cnacel order</button>
+            </form>
+        <% } %>
+        <% } %>
         <div class="dropdown-divider"></div>
-        <% } %>
-        <% } %>
         <h6 class="dropdown-header">Order details</h6>
         <button class="dropdown-item">Total sum: <%= order.totalSum %></button>
+        <button class="dropdown-item">Created at: <%= order.createdAt.toDateString() %></button>
         <button class="dropdown-item">Order <%= index + 1 %></button>
         <% if(order.status == 'pending') { %>
         <button class="dropdown-item">Status: <%= order.status %></button>
@@ -73,3 +85,30 @@
     </div>
 </div>
 <% } %>
+
+<div class="text-center">
+    <div class="my-4">
+        <button id="calculateSumOfOrders" class="btn btn-primary">Calculate sum all orders in this month</button>
+    </div>
+    <div>
+        <h2 id="totalSumOrdersResult"></h2>
+    </div>
+</div>
+
+<input id="workerId" type="hidden" value="<%=workerId%>">
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"
+    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
+<script>
+    $('#calculateSumOfOrders').click(() => {
+        $('#calculateSumOfOrders').text('Calculating');
+        const workerId = $('#workerId').val();
+        fetch('/order/sumOfOrders/' + workerId)
+            .then(response => response.json())
+            .then(data => {
+                $('#totalSumOrdersResult').text('The total sum of orders in this month is: $' + data.totalSumOrders);
+                $('#calculateSumOfOrders').text('Calculate sum all orders in this month');
+            });
+    });
+</script>

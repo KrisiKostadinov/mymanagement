@@ -26,11 +26,7 @@ module.exports = {
 
             var orders = await Order.find({ workerId: workerId });
 
-            orders.forEach(order => {
-                order.isConfirmed = order.status == constants.STATUS_CONFIRM;
-            });
-
-            res.render('order/all', { user, orders, companyId, isMyCompany: null });
+            res.render('order/all', { user, orders, companyId, isMyCompany: null, workerId });
         },
 
         async allInCompany(req, res) {
@@ -41,7 +37,27 @@ module.exports = {
             const orders = await Order.find({ workerId: workerId });
             const isMyCompany = user.id == ownerId;
             
-            res.render('order/all', { user, orders, companyId, isMyCompany });
+            res.render('order/all', { user, orders, companyId, isMyCompany, workerId });
+        },
+
+        async calculateSumOfOrders(req, res) {
+            const { workerId } = req.params;
+
+            var now = new Date();
+
+            const orders = await Order.find(
+                    {
+                        workerId: workerId,
+                        month: now.getMonth()
+                    }, 'totalSum');
+
+            var totalSumOrders = 0;
+
+            orders.forEach(order => {
+                totalSumOrders += order.totalSum;
+            });
+
+            res.send({ totalSumOrders: totalSumOrders });
         }
     },
 
@@ -52,12 +68,15 @@ module.exports = {
 
             const { products, totalSum } = req.body;
 
+            const now = new Date();
+
             await Order.create({
                 companyId,
                 workerId,
                 products,
                 totalSum,
-                status: constants.STATUS_PENDING
+                status: constants.STATUS_PENDING,
+                month: now.getMonth()
             });
 
             res.sendStatus(201);
@@ -83,6 +102,16 @@ module.exports = {
             await Order.findByIdAndDelete({ _id: orderId, status: constants.STATUS_PENDING });
 
             res.redirect('/order/worker/all');
+        },
+
+        async companyCancel(req, res) {
+            const orderId = req.params.orderId;
+            const { workerId } = req.body;
+
+            await Order.findByIdAndDelete(orderId);
+
+            req.flash('success', 'The order is deleted successfully!');
+            res.redirect('/order/company/all/' + workerId);
         }
     }
 }
