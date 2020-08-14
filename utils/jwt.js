@@ -7,8 +7,8 @@ const createToken = async (email, id, claim = null) => {
         const worker = await Worker.findOne({ email: email });
         var company = await Company.findOne({ ownerId: id });
 
-        if(worker) {
-            company = { companyId: worker.companyId };
+        if(worker && !company) {
+            company = { _id: worker.companyId };
         }
 
         const token = await jwt.sign({
@@ -16,7 +16,8 @@ const createToken = async (email, id, claim = null) => {
             id,
             claim,
             workerId: worker ? worker._id : null,
-            company: company ? company : null,
+            companyId: company ? company._id : null,
+            companyOwner: company.ownerId,
         }, process.env.SECRET, {
             expiresIn: process.env.EXPIRES_IN,
         });

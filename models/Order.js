@@ -2,7 +2,16 @@ const { Schema, model } = require('mongoose');
 const { ObjectId } = Schema.Types;
 
 const OrderSchema = new Schema({
-    products: [],
+    products: [{
+        name: String,
+        price: String,
+        count: String,
+        salesCount: String,
+        product: {
+            type: ObjectId,
+            ref: 'Product'
+        }
+    }],
 
     totalSum: {
         type: Number
@@ -20,6 +29,11 @@ const OrderSchema = new Schema({
     companyId: {
         type: ObjectId,
         ref: 'Compnay'
+    },
+
+    reportId: {
+        type: ObjectId,
+        ref: 'Report'
     },
 
     createdAt: {

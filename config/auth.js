@@ -54,7 +54,7 @@ const setAuthToken = async (req, res, next) => {
 const isAdmin = async (req, res, next) => {
     const token = await getToken(req);
 
-    isValidToken(token, req, res, next);
+    isValidToken(token, req, res);
     
     const user = await decodeTokenAndSetUserData(token, req);
 
@@ -68,7 +68,7 @@ const isAdmin = async (req, res, next) => {
 const isBoss = async (req, res, next) => {
     const token = await getToken(req);
 
-    isValidToken(token, req, res, next);
+    isValidToken(token, req, res);
     
     const user = await decodeTokenAndSetUserData(token, req);
     
@@ -83,7 +83,7 @@ const isBoss = async (req, res, next) => {
 const isWorker = async (req, res, next) => {
     const token = await getToken(req);
 
-    isValidToken(token, req, res, next);
+    isValidToken(token, req, res);
     
     const user = await decodeTokenAndSetUserData(token, req);
 
@@ -97,7 +97,7 @@ const isWorker = async (req, res, next) => {
 const isWorkerOrBoss = async (req, res, next) => {
     const token = await getToken(req);
 
-    isValidToken(token, req, res, next);
+    isValidToken(token, req, res);
     
     const user = await decodeTokenAndSetUserData(token, req);
 
@@ -131,10 +131,11 @@ const isMessages = (req, res, next) => {
 }
 
 const decodeTokenAndSetUserData = async (token, req) => {
-    const { email, id, claim, workerId, company } = await decodeToken(token);
+    const { email, id, claim, workerId, companyId, companyOwner } = await decodeToken(token);
 
     const user = { email, id, claim };
-    const worker = { workerId, companyId: company._id };
+    const worker = { id: workerId };
+    const company = { id: companyId, ownerId: companyOwner };
     
     req.user = user;
     req.worker = worker;
@@ -145,12 +146,10 @@ const decodeTokenAndSetUserData = async (token, req) => {
     return user;
 }
 
-const isValidToken = (token, req, res, next) => {
+const isValidToken = (token, req, res) => {
     if(!token) {
         return res.redirect('/');
     }
-
-    next();
 }
 
 module.exports = {

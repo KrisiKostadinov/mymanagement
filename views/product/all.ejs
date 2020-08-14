@@ -6,14 +6,22 @@
 </div>
 <div class="row">
     <% products.forEach(product => { %>
-    <div class="col-md-6">
+    <div class="col-md-3">
         <div class="card my-2">
-            <a class="p-2" href="/product/<%=product._id%>"><%= product.name %></a>
-            <img class="w-100" src="<%= product.imageUrl %>">
+            <a class="p-2 d-flex justify-content-between" href="/product/<%=product._id%>"><%= product.name %>
+                <p class="text-right m-0"><%= product.price %></p>
+            </a>
+            <% if(product.imageUrl) { %>
+            <img class="w-100" src="<%=product.imageUrl%>">
+            <% } %>
         </div>
     </div>
     <% }) %>
     <% if(products.length === 0) { %>
-        <p>No products in this company</p>
+    <div class="col-md-6 mx-auto text-center">
+        <div class="alert alert-info">
+            <h2>No products in this company</h2>
+        </div>
+    </div>
     <% } %>
 </div>

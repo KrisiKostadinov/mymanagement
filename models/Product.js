@@ -11,11 +11,6 @@ const ProductSchema = new Schema({
         type: String
     },
 
-    bestDays: {
-        type: Number,
-        required: true,
-    },
-
     price: {
         type: String,
         required: true,
@@ -29,7 +24,9 @@ const ProductSchema = new Schema({
     userId: {
         type: ObjectId,
         ref: 'User'
-    }
+    },
+
+    orders: [],
 });
 
 const Product = model('Product', ProductSchema);

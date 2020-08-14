@@ -22,7 +22,13 @@
         <form>
             <td><%= index + 1%></td>
             <td><%= product.name%></td>
-            <td><%= product.bestDays%></td>
+            <td>
+                <% if(product.bestDays) { %>
+                    <%= product.bestDays%>
+                <% } else { %>
+                    -
+                <% } %>
+            </td>
             <td class="w-25">
                 <input class="form-control" type="number" value="0" id="<%=index%>" min="0">
             </td>
@@ -47,7 +53,7 @@
 
 <div>
     <div class="text-right">
-        <h2 id="total-sum">Total sum: <span></span></h2>
+        <h2 id="total-sum">Total <span></span></h2>
     </div>
     <div class="text-center">
         <button id="data-add-order" disabled class="btn btn-primary">Send order</button>

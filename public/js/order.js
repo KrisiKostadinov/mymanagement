@@ -9,12 +9,11 @@ function checkProduct(data) {
 
     addProduct(
         data.id,
-        {
-            name: data.name,
-            price: data.price,
-            bestDays: data.bestDays,
-            count: data.count
-        });
+        data.name,
+        data.price,
+        data.bestDays,
+        data.count
+    );
 
     checkIsExists(JSON.parse(localStorage.getItem('products')));
 }
@@ -48,9 +47,9 @@ function checkIsEmptyProducts(products) {
     }
 }
 
-function addProduct(id, product) {
+function addProduct(id, name, price, bestDays, count) {
     const order = JSON.parse(localStorage.getItem('products')) || [];
-    order.push({ id, product });
+    order.push({ id, name, price, bestDays, count });
 
     var button = document.querySelector(`[data-form-id="${id}"]`);
     button.parentElement.parentElement.querySelector('input').disabled = true;
@@ -102,12 +101,13 @@ function checkIsExists(order) {
         } else {
             button.innerText = 'Remove product';
             button.style.color = 'red';
-            button.parentElement.parentElement.querySelector('input').value = products[i].product.count;
+            button.parentElement.parentElement.querySelector('input').value = products[i].count;
             button.disabled = false;
             button.parentElement.parentElement.querySelector('input').disabled = true;
         }
     }
 
+    console.log(order);
     totalSum(order);
 }
 
@@ -151,10 +151,10 @@ function totalSum(order) {
     var totalSum = 0;
 
     order.forEach(product => {
-        totalSum += Number(product.product.price) * Number(product.product.count);
+        totalSum += Number(product.price) * Number(product.count);
     });
 
-    document.querySelector('#total-sum span').innerText = totalSum;
+    document.querySelector('#total-sum span').innerText = totalSum.toFixed(2);
 
     return totalSum;
 }

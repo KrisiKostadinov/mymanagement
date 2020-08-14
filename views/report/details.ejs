@@ -1,0 +1,37 @@
+<% if(error) { %>
+    <div id="success-msg" class="mt-4 alert alert-warning alert-dismissible fade show" role="alert">
+        <%= error %>
+    </div>
+<% } else { %>
+    <h2 class="text-center">Report details: <strong><%= report.orderId.createdAt.toDateString() %></strong></h2>
+    <table class="table table-bordered mt-4">
+        <tr>
+            <th>Total</th>
+            <th>different</th>
+            <th>Expected</th>
+            <th>Passed order</th>
+            <th>Sales count</th>
+            <th>Expected sales count</th>
+        </tr>
+        <tr>
+            <td>
+                <%=report.totalSum.toFixed(2)%>
+            </td>
+            <td>
+                <%=report.different.toFixed(2)%>
+            </td>
+            <td>
+                <%=report.expectedSum.toFixed(2)%>
+            </td>
+            <td>
+                <%=report.isPassed ? 'Yes' : 'No'%>
+            </td>
+            <td>
+                <%=report.salesCount%>
+            </td>
+            <td>
+                <%=report.expectedSalesCount%>
+            </td>
+        </tr>
+    </table>
+<% } %>

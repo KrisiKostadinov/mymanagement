@@ -7,7 +7,7 @@ module.exports = {
         async add(req, res) {
             const data = req.body;
             const user = req.user;
-            const { companyId } = req.params;
+            const companyId = req.company.id;
 
             const products = await Product.find({ companyId: companyId });
 
@@ -21,10 +21,10 @@ module.exports = {
 
         async all(req, res) {
             const user = req.user;
-            const { workerId } = req.worker;
-            const { companyId } = req.company;
+            const workerId = req.worker.id;
+            const companyId = req.company.id;
 
-            var orders = await Order.find({ workerId: workerId });
+            var orders = await Order.find({ workerId: workerId }).sort({ createdAt: -1 });
 
             res.render('order/all', { user, orders, companyId, isMyCompany: null, workerId });
         },
@@ -36,7 +36,7 @@ module.exports = {
 
             const orders = await Order.find({ workerId: workerId });
             const isMyCompany = user.id == ownerId;
-            
+
             res.render('order/all', { user, orders, companyId, isMyCompany, workerId });
         },
 
@@ -46,38 +46,54 @@ module.exports = {
             var now = new Date();
 
             const orders = await Order.find(
-                    {
-                        workerId: workerId,
-                        month: now.getMonth()
-                    }, 'totalSum');
+                {
+                    workerId: workerId,
+                    month: now.getMonth()
+                }, 'totalSum');
 
-            var totalSumOrders = 0;
+            var totalSum = 0;
+            var expectedSum = 20;
+            var diffSum = 0;
 
             orders.forEach(order => {
-                totalSumOrders += order.totalSum;
+                totalSum += order.totalSum;
             });
 
-            res.send({ totalSumOrders: totalSumOrders });
+            diffSum = Math.abs(totalSum - expectedSum);
+
+            res.send({
+                totalSum,
+                expectedSum,
+                diffSum,
+            });
         }
     },
 
     post: {
         async add(req, res) {
-            const { workerId } = req.worker;
-            const { companyId } = req.company;
+            const workerId = req.worker.id;
+            const companyId = req.company.id;
 
             const { products, totalSum } = req.body;
-
+            
             const now = new Date();
-
-            await Order.create({
+            
+            var productIds = [];
+            
+            products.forEach(product => {
+                productIds.push({ _id: product.id });
+            });
+            
+            const order = await Order.create({
                 companyId,
                 workerId,
-                products,
                 totalSum,
+                products,
                 status: constants.STATUS_PENDING,
                 month: now.getMonth()
             });
+            
+            await Product.updateMany({ $or: productIds }, { $push: { orders: order._id } });
 
             res.sendStatus(201);
         },
@@ -85,11 +101,11 @@ module.exports = {
         async confirmOrder(req, res) {
             const { orderId } = req.params;
             const { workerId } = req.body;
-            
+
             await Order.findByIdAndUpdate(orderId, {
                 $set: { status: constants.STATUS_CONFIRM }
             });
-            
+
             req.flash('success', 'The order is confirmed successfully!');
             res.redirect('/order/company/all/' + workerId);
         }

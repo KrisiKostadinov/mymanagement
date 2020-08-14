@@ -24,15 +24,13 @@
     <tr>
         <th>Name</th>
         <th>Price</th>
-        <th>Best days</th>
         <th>Count</th>
     </tr>
     <% order.products.forEach(product => { %>
     <tr>
-        <td><%= product.product.name %></td>
-        <td><%= product.product.price %></td>
-        <td><%= product.product.bestDays %></td>
-        <td><%= product.product.count %></td>
+        <td><%= product.name %></td>
+        <td><%= product.price %></td>
+        <td><%= product.count %></td>
     </tr>
     <% }) %>
 </table>
@@ -42,28 +40,29 @@
         Options
     </button>
     <div class="dropdown-menu dropdown-menu-right">
-        <% if(isMyCompany) { %>
-            <form action="/order/company/<%=order._id%>?_method=DELETE" method="POST">
-                <input type="hidden" name="workerId" value="<%=order.workerId%>">
-                <button class="dropdown-item text-danger" type="submit">Cancel order</button>
-            </form>
-        <% } %>
-        <% if(order.status == 'pending') { %>
-        <% if(isMyCompany) { %>
+        <% if(isMyCompany && order.status == 'pending') { %>
+        <form action="/order/company/<%=order._id%>?_method=DELETE" method="POST">
+            <input type="hidden" name="workerId" value="<%=order.workerId%>">
+            <button class="dropdown-item text-danger" type="submit">Cancel order</button>
+        </form>
         <form action="/order/company/<%=order._id%>" method="POST">
             <input type="hidden" name="workerId" value="<%=order.workerId%>">
             <button class="dropdown-item text-primary" type="submit">Confirm order</button>
         </form>
         <div class="dropdown-divider"></div>
-        <% } else if(order.status != 'confirm') { %>
+        <% } %>
+        <% if(order.status == 'pending') { %>
         <form action="/order/worker/<%=order._id%>?_method=DELETE" method="POST">
             <button class="dropdown-item text-danger" type="submit">Cnacel order</button>
         </form>
         <% } else if(order.status == 'confirm') { %>
-            <form action="/order/worker/<%=order._id%>?_method=DELETE" method="POST">
-                <button class="dropdown-item text-danger" type="submit">Cnacel order</button>
-            </form>
+        <a href="/report/details/<%=order._id%>" class="dropdown-item text-primary">View report</a>
+        <% if(!isMyCompany) { %>
+        <a href="/report/add/<%=order._id%>" class="dropdown-item text-primary">Report</a>
         <% } %>
+        <form action="/order/worker/<%=order._id%>?_method=DELETE" method="POST">
+            <button class="dropdown-item text-danger" type="submit">Cnacel order</button>
+        </form>
         <% } %>
         <div class="dropdown-divider"></div>
         <h6 class="dropdown-header">Order details</h6>
@@ -88,10 +87,34 @@
 
 <div class="text-center">
     <div class="my-4">
-        <button id="calculateSumOfOrders" class="btn btn-primary">Calculate sum all orders in this month</button>
+        <button type="button" id="calculateSumOfOrders" class="btn btn-primary" data-toggle="modal"
+            data-target=".bd-example-modal-sm">Month report</button>
     </div>
-    <div>
-        <h2 id="totalSumOrdersResult"></h2>
+</div>
+
+
+<div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Month report of all orders</h2>
+            </div>
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Different
+                    <span id="orders-diff" class="badge badge-danger badge-pill">0</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Total
+                    <span id="orders-total" class="badge badge-primary badge-pill">0</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Expected
+                    <span id="orders-expected" class="badge badge-primary badge-pill">0</span>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>
 
@@ -107,8 +130,10 @@
         fetch('/order/sumOfOrders/' + workerId)
             .then(response => response.json())
             .then(data => {
-                $('#totalSumOrdersResult').text('The total sum of orders in this month is: $' + data.totalSumOrders);
-                $('#calculateSumOfOrders').text('Calculate sum all orders in this month');
+                $('#orders-total').text(data.totalSum.toFixed(2));
+                $('#orders-expected').text(data.expectedSum.toFixed(2));
+                $('#orders-diff').text(data.diffSum.toFixed(2));
+                $('#calculateSumOfOrders').text('Month report');
             });
     });
 </script>

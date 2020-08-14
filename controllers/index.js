@@ -5,6 +5,7 @@ const shop = require('../controllers/shop');
 const worker = require('../controllers/worker');
 const admin = require('../controllers/admin');
 const order = require('../controllers/order');
+const report = require('../controllers/report');
 
 module.exports = {
     user,
@@ -14,4 +15,5 @@ module.exports = {
     worker,
     admin,
     order,
+    report,
 }
