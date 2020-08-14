@@ -17,7 +17,7 @@ const createToken = async (email, id, claim = null) => {
             claim,
             workerId: worker ? worker._id : null,
             companyId: company ? company._id : null,
-            companyOwner: company.ownerId,
+            companyOwner: company ? company.ownerId : null,
         }, process.env.SECRET, {
             expiresIn: process.env.EXPIRES_IN,
         });

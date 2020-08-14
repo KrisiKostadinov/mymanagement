@@ -24,9 +24,11 @@ module.exports = {
             const workerId = req.worker.id;
             const companyId = req.company.id;
 
-            var orders = await Order.find({ workerId: workerId }).sort({ createdAt: -1 });
+            const now = new Date();
 
-            res.render('order/all', { user, orders, companyId, isMyCompany: null, workerId });
+            var orders = await Order.find({ workerId: workerId, month: now.getMonth() }).sort({ createdAt: -1 });
+
+            res.render('order/all', { user, orders, companyId, isMyCompany: null, workerId, now });
         },
 
         async allInCompany(req, res) {
@@ -34,10 +36,12 @@ module.exports = {
             const { workerId } = req.params;
             const { companyId, ownerId } = req.company;
 
-            const orders = await Order.find({ workerId: workerId });
+            const now = new Date();
+
+            const orders = await Order.find({ workerId: workerId, month: now.getMonth() }).sort({ createdAt: -1 });
             const isMyCompany = user.id == ownerId;
 
-            res.render('order/all', { user, orders, companyId, isMyCompany, workerId });
+            res.render('order/all', { user, orders, companyId, isMyCompany, workerId, now });
         },
 
         async calculateSumOfOrders(req, res) {
@@ -49,15 +53,36 @@ module.exports = {
                 {
                     workerId: workerId,
                     month: now.getMonth()
-                }, 'totalSum');
+                }, 'totalSum').populate('reportId');
+
+            const orderProducts = await Order.find({ workerId: workerId }, 'products');
 
             var totalSum = 0;
-            var expectedSum = 20;
+            var expectedSum = 0;
             var diffSum = 0;
+            var salesCount = 0;
+            var expectedSalesCount = 0;
+            var ordersCount = 0;
+
+            orderProducts.forEach(order => {
+                order.products.forEach(product => {
+                    expectedSalesCount += Number(product.count);
+                });
+            });
 
             orders.forEach(order => {
-                totalSum += order.totalSum;
+                if(order.reportId) {
+                    totalSum += Number(order.reportId.totalSum);
+                    expectedSum += Number(order.reportId.expectedSum);
+                    salesCount += Number(order.reportId.salesCount);
+                }
+
+                ordersCount++;
             });
+
+            if(expectedSum == 0 && totalSum == 0) {
+                return res.status(400).send({ error: 'Don\'t reports for now!' });
+            }
 
             diffSum = Math.abs(totalSum - expectedSum);
 
@@ -65,6 +90,9 @@ module.exports = {
                 totalSum,
                 expectedSum,
                 diffSum,
+                salesCount,
+                expectedSalesCount,
+                ordersCount,
             });
         }
     },

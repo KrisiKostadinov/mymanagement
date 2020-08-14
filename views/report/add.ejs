@@ -65,7 +65,7 @@
 <script>
     const inputs = document.querySelectorAll('[sales-count]');
     inputs.forEach(field => {
-        field.addEventListener('change', calc);
+        field.addEventListener('input', calc);
     });
 
     $('#report').click(() => {

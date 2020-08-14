@@ -60,7 +60,7 @@ module.exports = {
                 isPassed = true;
             }
 
-            await Report.create({
+            const newReport = await Report.create({
                 orderId,
                 workerId,
                 totalSum,
@@ -70,6 +70,8 @@ module.exports = {
                 expectedSalesCount,
                 isPassed
             });
+            
+            await Order.findByIdAndUpdate(orderId, { $set: { reportId: newReport._id }});
 
             res.sendStatus(201);
         }
