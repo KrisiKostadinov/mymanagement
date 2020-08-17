@@ -1,3 +1,8 @@
+<% if(locals.messages.success) { %>
+    <div class="alert alert-success">
+        <%= locals.messages.success %>
+    </div>
+<% } %>
 <div class="row mx-auto my-4">
     <div class="col-md-6">
         <div class="d-flex justify-content-between">
@@ -45,15 +50,14 @@
             </div>
         </div>
 
-        <% if(user && user.claim === null) { %>
+        <% if(user && !isCandidated && user.claim === null || user && !isCandidated && user.claim === '') { %>
         <form action="/worker/apply" method="POST" class="text-center my-4">
             <input type="hidden" value="<%=user.id%>" name="id">
             <input type="hidden" value="<%=company._id%>" name="companyId">
             <input type="hidden" value="<%=company.email%>" name="email">
             <button class="btn btn-primary" type="submit">Candidate in this company</button>
         </form>
-        <% } %>
-        <% if(user && user.claim === 'pending') { %>
+        <% } else if(user && isCandidated && user.claim === null || user.claim === '') { %>
         <form class="text-center my-4">
             <button type="button" class="btn btn-primary" disabled>Pending from the company</button>
         </form>

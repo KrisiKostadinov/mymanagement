@@ -1,6 +1,8 @@
 <div class="col-md-6 mt-4 mx-auto">
     <% if(error) { %>
-        <p><%= error %></p>
+        <div class="alert alert-danger">
+            <%= error %>
+        </div>
     <% } %>
     <form action="/company/edit/<%=company._id%>" method="POST">
         <div class="form-group">

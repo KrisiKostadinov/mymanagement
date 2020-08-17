@@ -1,3 +1,8 @@
+<% if(locals.messages.success) { %>
+    <div class="alert alert-success">
+        <%= locals.messages.success %>
+    </div>
+<% } %>
 <div class="d-flex justify-content-md-between align-items-center">
     <h2>All products - <%=company.name%></h2>
     <% if(isMyCompany) { %>
@@ -9,7 +14,7 @@
     <div class="col-md-3">
         <div class="card my-2">
             <a class="p-2 d-flex justify-content-between" href="/product/<%=product._id%>"><%= product.name %>
-                <p class="text-right m-0"><%= product.price %></p>
+                <p class="text-right m-0"><%= Number(product.price).toFixed(2) %></p>
             </a>
             <% if(product.imageUrl) { %>
             <img class="w-100" src="<%=product.imageUrl%>">

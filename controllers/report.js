@@ -21,8 +21,6 @@ module.exports = {
 
             const report = await Report.findOne({ orderId: orderId }).populate('orderId');
 
-            console.log(report);
-
             if(!report) {
                 return res.render('report/details', { user, error: 'Don\'t report for this order!' });
             }

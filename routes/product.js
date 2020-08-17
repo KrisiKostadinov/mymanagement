@@ -4,9 +4,9 @@ const { product } = require('../controllers');
 const auth = require('../config/auth');
 
 router.get('/add', auth.isBoss, product.get.add);
-router.get('/all/:companyId', auth.isAuth, product.get.all);
-router.get('/all', auth.isAuth, product.get.all);
-router.get('/:id', auth.isAuth, product.get.byId);
+router.get('/all/:companyId', auth.isAuth, auth.isMessages, product.get.all);
+router.get('/all', auth.isAuth, auth.isMessages, product.get.all);
+router.get('/:id', auth.isAuth, auth.isMessages, product.get.byId);
 router.get('/edit/:id', auth.isBoss, product.get.edit);
 router.get('/delete/:id', auth.isBoss, product.get.deleteById);
 

@@ -127,6 +127,7 @@ const getToken = async (req) => {
 const isMessages = (req, res, next) => {
     res.locals.messages = req.flash();
     req.flash('success', null);
+    req.flash('error', null);
     next();
 }
 

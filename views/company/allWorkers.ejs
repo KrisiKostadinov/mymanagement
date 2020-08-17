@@ -1,3 +1,8 @@
+<% if(locals.messages.success) { %>
+    <div class="alert alert-success">
+        <%= locals.messages.success %>
+    </div>
+<% } %>
 <% if(workers.length > 0) { %>
     <h2 class="text-center">All workers in the company</h2>
     <table class="table table-bordered my-4">

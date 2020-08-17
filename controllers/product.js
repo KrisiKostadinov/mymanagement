@@ -21,8 +21,6 @@ module.exports = {
 
             const isMyCompany = user.id.toString() === company.ownerId.toString();
             
-            console.log(isMyCompany);
-            
             res.render('product/all', { user, error: '', products, company, isMyCompany });
         },
 
@@ -41,8 +39,6 @@ module.exports = {
             const { id } = req.params;
             
             const product = await Product.findOne({ _id: id });
-            
-            console.log(product);
 
             let isMyProduct = false;
             if(user) {
@@ -57,8 +53,7 @@ module.exports = {
             const { id } = req.params;
 
             const product = await Product.findOne({ _id: id });
-            
-            console.log(product);
+
             res.render('product/delete', { user, product });
         }
     },
@@ -78,6 +73,7 @@ module.exports = {
 
             try {
                 await Product.create(data);
+                req.flash('success', 'The product is created successfully!');
                 res.redirect('all?companyId=' + data.companyId);
             } catch(err) {
                 const companies = await Company.find({ ownerId: user.id });
@@ -99,6 +95,7 @@ module.exports = {
                 }
 
                 await Product.findByIdAndUpdate(id, data);
+                req.flash('success', 'The product is updated successfully!');
                 res.redirect('/product/all?companyId=' + product.companyId);
             } catch(err) {
                 console.log(err);
@@ -116,6 +113,7 @@ module.exports = {
             const isMyProduct = product.userId == user.id;
             if(isMyProduct) {
                 await Product.findByIdAndDelete(id);
+                req.flash('success', 'The product is deleted successfully!');
                 return res.redirect('/product/all?companyId=' + product.companyId);
             }
 

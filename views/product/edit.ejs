@@ -10,8 +10,8 @@
             <input class="form-control" type="text" id="imageUrl" value="<%=product.imageUrl%>" name="imageUrl">
         </div>
         <div class="form-group">
-            <label for="bestDays">Best days in number</label>
-            <input class="form-control" type="number" id="bestDays" value="<%=product.bestDays%>" name="bestDays">
+            <label for="price-product">Price</label>
+            <input class="form-control" type="text" id="price-product" value="<%=Number(product.price).toFixed(2) %>" name="price">
         </div>
         <div class="form-group">
             <label for="companyId">Select company</label>
@@ -21,6 +21,6 @@
                 <% }) %>
             </select>
         </div>
-        <button class="btn btn-primary" type="submit">Eidt product</button>
+        <button class="btn btn-primary" type="submit">Edit product</button>
     </form>
 </div>

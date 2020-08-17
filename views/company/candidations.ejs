@@ -1,6 +1,16 @@
 <div class="col-md-4">
     <h2><%= company.name%></h2>
 </div>
+<% if(locals.messages.error) { %>
+    <div class="alert alert-danger">
+        <%= locals.messages.error %>
+    </div>
+<% } %>
+<% if(locals.messages.success) { %>
+    <div class="alert alert-success">
+        <%= locals.messages.success %>
+    </div>
+<% } %>
 <% if(company.candidates.length > 0) { %>
 <table class="table table-bordered">
     <tr class="text-center">
@@ -12,41 +22,41 @@
         <th colspan="3">Actions</th>
     </tr>
     <% company.candidates.forEach(user => { %>
-        <tr class="text-center">
-            <td><%= user.email%></td>
-            <td><%= user.firstName%></td>
-            <td><%= user.sirName%></td>
-            <td><%= user.lastName%></td>
-            <td><%= user.city%></td>
-            <td>
-                <form action="/company/addWorker/<%=company._id%>" method="POST">
-                    <input type="hidden" value="<%=user.email%>" name="email">
-                    <input type="hidden" value="<%=user.firstName%>" name="firstName">
-                    <input type="hidden" value="<%=user.sirName%>" name="sirName">
-                    <input type="hidden" value="<%=user.lastName%>" name="lastName">
-                    <input type="hidden" value="<%=user.phoneNumber%>" name="phoneNumber">
-                    <input type="hidden" value="<%=user.city%>" name="city">
-                    <input type="hidden" value="<%=user.userId%>" name="userId">
-                    <button class="btn" type="submit">Confirm worker</button>
-                </form>
-            </td>
-            <td>
-                <form action="/company/dismissWorker/<%=company._id%>?_method=DELETE" method="POST">
-                    <input type="hidden" value="<%=user.email%>" name="email">
-                    <button class="btn text-danger" type="submit">Dismiss worker</button>
-                </form>
-            </td>
-            <td>
-                <a class="btn" href="/company/allWorkers/<%=company._id%>">Show all workers</a>
-            </td>
-        </tr>
+    <tr class="text-center">
+        <td><%= user.email%></td>
+        <td><%= user.firstName%></td>
+        <td><%= user.sirName%></td>
+        <td><%= user.lastName%></td>
+        <td><%= user.city%></td>
+        <td>
+            <form action="/company/addWorker/<%=company._id%>" method="POST">
+                <input type="hidden" value="<%=user.email%>" name="email">
+                <input type="hidden" value="<%=user.firstName%>" name="firstName">
+                <input type="hidden" value="<%=user.sirName%>" name="sirName">
+                <input type="hidden" value="<%=user.lastName%>" name="lastName">
+                <input type="hidden" value="<%=user.phoneNumber%>" name="phoneNumber">
+                <input type="hidden" value="<%=user.city%>" name="city">
+                <input type="hidden" value="<%=user.userId%>" name="userId">
+                <button class="btn" type="submit">Confirm worker</button>
+            </form>
+        </td>
+        <td>
+            <form action="/company/dismissWorker/<%=company._id%>?_method=DELETE" method="POST">
+                <input type="hidden" value="<%=user.email%>" name="email">
+                <button class="btn text-danger" type="submit">Dismiss worker</button>
+            </form>
+        </td>
+        <td>
+            <a class="btn" href="/company/allWorkers/<%=company._id%>">Show all workers</a>
+        </td>
+    </tr>
     <% }) %>
 </table>
 <% } else { %>
-    <div class="col-md-4 mx-auto text-center">
-        <div class="alert alert-info">
-            <h2>No candidates</h2>
-            <a class="btn text-primary" href="/company/allWorkers/<%=company._id%>">Show all workers</a>
-        </div>
+<div class="col-md-4 mx-auto text-center">
+    <div class="alert alert-info">
+        <h2>No candidates</h2>
+        <a class="btn text-primary" href="/company/allWorkers/<%=company._id%>">Show all workers</a>
     </div>
+</div>
 <% } %>

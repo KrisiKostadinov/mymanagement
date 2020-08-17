@@ -1,9 +1,17 @@
-<form action="/product/<%=product._id%>?_method=DELETE" method="POST">
-    <label for="name">Name</label>
-    <input type="text" id="name" autofocus value="<%=product.name%>" name="name" readonly>
-    <label for="imageUrl">Image</label>
-    <input type="text" id="imageUrl" value="<%=product.imageUrl%>" name="imageUrl" readonly>
-    <label for="phoneNumber">Phone number</label>
-    <input type="number" id="phoneNumber" value="<%=product.phoneNumber%>" name="phoneNumber" readonly>
-    <button type="submit">Delete product</button>
-</form>
+<div class="col-md-6 mt-4 mx-auto">
+    <form action="/product/<%=product._id%>?_method=DELETE" method="POST">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input class="form-control" type="text" id="name" value="<%=product.name%>" name="name" readonly>
+        </div>
+        <div class="form-group">
+            <label for="imageUrl">Image</label>
+            <input class="form-control" type="text" id="imageUrl" value="<%=product.imageUrl%>" name="imageUrl" readonly>
+        </div>
+        <div class="form-group">
+            <label for="price-product">Price</label>
+            <input disabled class="form-control" type="text" id="price-product" value="<%=Number(product.price).toFixed(2) %>" name="price">
+        </div>
+        <button autofocus type="submit" class="btn btn-danger">Delete product</button>
+    </form>
+</div>

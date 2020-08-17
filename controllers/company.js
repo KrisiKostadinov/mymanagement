@@ -35,8 +35,9 @@ module.exports = {
             const owner = await User.findOne({ _id: company.ownerId });
             
             const isMyCompany = company.ownerId == user.id;
+            const isCandidated = company.candidates.filter(u => u.userId == user.id).length > 0 ? true : false;
             
-            res.render('company/details', { user, error: '', company, isMyCompany, owner });
+            res.render('company/details', { user, error: '', company, isMyCompany, owner, isCandidated });
         },
         
         async edit(req, res) {
@@ -113,6 +114,7 @@ module.exports = {
                     claim: process.env.BOSS_CLAIM
                 });
 
+                req.flash('success', 'This user was created successfully!');
                 res.redirect('/company/my');
             } catch(err) {
                 res.render('company/add', { user, error: 'Please fill all fields!' });
@@ -138,6 +140,7 @@ module.exports = {
                     description
                 });
     
+                req.flash('success', 'This user was updated successfully!');
                 res.redirect(`/company/${id}`);
             } catch(err) {
                 console.log(err);
@@ -149,6 +152,13 @@ module.exports = {
             const data = req.body;
 
             try {
+                const isWorker = await Worker.findOne({ userId: data.userId });
+
+                if(isWorker) {
+                    req.flash('error', 'This user already works in any company!');
+                    return res.redirect('/company/candidations/' + id);
+                }
+                
                 await Worker.create({
                     userId: data.userId,
                     companyId: id,
@@ -168,6 +178,7 @@ module.exports = {
                 console.log(err);
             }
 
+            req.flash('success', ` The user (${data.firstName} ${data.sirName} ${data.lastName}) was added successfully!`);
             res.redirect(`/company/candidations/${id}`);
         }
     },
@@ -190,23 +201,29 @@ module.exports = {
                 const users = await Worker.find({ companyId: id });
                 await Worker.deleteMany({ companyId: id });
 
-                var ids = [];
+                if(users.length > 0) {
+                    var ids = [];
 
-                users.forEach(user => {
-                    ids.push({ _id: user.userId });
-                });
+                    users.forEach(user => {
+                        ids.push({ _id: user.userId });
+                    });
 
-                console.log(ids, users, user.id);
-
-                await User.updateMany({ $or: ids }, {
-                    $set: { claim: '' }
-                });
-
-                await User.updateOne({ _id: user.id }, {
-                    $set: { claim: '' }
-                });
+                    await User.updateMany({ $or: ids }, {
+                        $set: { claim: null }
+                    });
+                }
 
                 await Company.findByIdAndDelete(id);
+
+                const isUserCompanies = await Company.findOne({ ownerId: user.id });
+                
+                if(!isUserCompanies) {
+                    await User.updateOne({ _id: user.id }, {
+                        $set: { claim: null }
+                    });
+                }
+
+                req.flash('success', 'This company was deleted successfully!');
                 return res.redirect('/company/my');
             }
 
@@ -225,6 +242,7 @@ module.exports = {
                 console.log(err);
             }
 
+            req.flash('success', 'This user was deleted successfully!');
             res.redirect(`/company/candidations/${id}`);
         },
 
@@ -234,6 +252,7 @@ module.exports = {
             const removedWorker = await Worker.findByIdAndDelete(workerId);
             await User.updateOne({ _id: removedWorker.userId }, { $set: { claim: null }});
 
+            req.flash('success', 'This user was deleted successfully!');
             res.redirect(`/company/allWorkers/${companyId}`);
         }
     }
