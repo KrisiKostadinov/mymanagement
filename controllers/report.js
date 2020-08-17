@@ -10,7 +10,9 @@ module.exports = {
 
             const order = await Order.findOne({ _id: orderId });
 
-            res.render('report/add', { user, order });
+            const report = await Report.findOne({ orderId: orderId });
+
+            res.render('report/add', { user, order, report, isCreated: report ? true : false });
         },
 
         async byId(req, res) {
@@ -58,6 +60,12 @@ module.exports = {
 
             if(expectedSum == totalSum) {
                 isPassed = true;
+            }
+
+            const isCreated = await Report.findOne({ orderId: orderId });
+
+            if(isCreated) {
+                return res.status(400).send({ error: 'This order report already exists!' });
             }
 
             const newReport = await Report.create({

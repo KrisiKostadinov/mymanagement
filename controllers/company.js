@@ -54,7 +54,9 @@ module.exports = {
 
             const company = await Company.findOne({ _id: id });
 
-            res.render('company/delete', { company, user });
+            const workers = await Worker.find({ companyId: id });
+
+            res.render('company/delete', { company, user, workers });
         },
 
         async candidations(req, res) {
@@ -180,10 +182,30 @@ module.exports = {
             }
 
             const company = await Company.findOne({ _id: id });
-
             const isMyCompany = company.ownerId == user.id;
+
             if(isMyCompany) {
                 await Product.deleteMany({ companyId: company._id });
+
+                const users = await Worker.find({ companyId: id });
+                await Worker.deleteMany({ companyId: id });
+
+                var ids = [];
+
+                users.forEach(user => {
+                    ids.push({ _id: user.userId });
+                });
+
+                console.log(ids, users, user.id);
+
+                await User.updateMany({ $or: ids }, {
+                    $set: { claim: '' }
+                });
+
+                await User.updateOne({ _id: user.id }, {
+                    $set: { claim: '' }
+                });
+
                 await Company.findByIdAndDelete(id);
                 return res.redirect('/company/my');
             }

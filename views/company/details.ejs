@@ -12,9 +12,6 @@
                     </svg>
                 </button>
                 <div class="dropdown-menu" aria-labelledby="options">
-                    <% if(!company.imageUrl && isMyCompany) { %>
-                    <a class="dropdown-item" href="/company/edit/<%=companyoptions._id%>">Add company logo</a>
-                    <% } %>
                     <a class="dropdown-item" href="/product/all/<%=company._id%>">View products of the company</a>
                     <% if(isMyCompany) { %>
                     <a class="dropdown-item" href="/shop/<%=company._id%>">View all shops</a>
