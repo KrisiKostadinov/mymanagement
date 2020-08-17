@@ -7,7 +7,9 @@ router.get('/:companyId', auth.isWorker, order.get.add);
 router.get('/status/success', auth.isWorker, order.get.success);
 router.get('/worker/all', auth.isWorker, auth.isMessages, order.get.all);
 router.get('/company/all/:workerId', auth.isBoss, auth.isMessages, order.get.allInCompany);
-router.get('/sumOfOrders/:workerId', auth.isWorkerOrBoss, order.get.calculateSumOfOrders);
+router.get('/worker/all/:month', auth.isWorker, auth.isMessages, order.get.all);
+router.get('/company/all/:workerId/:month', auth.isWorkerOrBoss, auth.isMessages, order.get.allInCompany);
+router.get('/sumOfOrders/:workerId/:month', auth.isWorkerOrBoss, order.get.calculateSumOfOrders);
 
 router.post('/add', auth.isWorker, order.post.add);
 router.post('/company/:orderId', auth.isBoss, order.post.confirmOrder);

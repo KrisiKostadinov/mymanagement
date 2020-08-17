@@ -1,7 +1,8 @@
 $('#calculateSumOfOrders').click(() => {
     $('#calculateSumOfOrders').text('Calculating');
     const workerId = $('#workerId').val();
-    fetch('/order/sumOfOrders/' + workerId)
+    const monthId = $('#monthId').val();
+    fetch(`/order/sumOfOrders/${workerId}/${monthId}`)
         .then(response => response.json())
         .then(data => {
             if (!data.error) {

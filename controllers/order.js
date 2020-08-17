@@ -25,34 +25,44 @@ module.exports = {
             const companyId = req.company.id;
 
             const now = new Date();
+            const year = now.getFullYear();
+            var month = req.params.month ? Number(req.params.month) : now.getMonth();
 
-            var orders = await Order.find({ workerId: workerId, month: now.getMonth() }).sort({ createdAt: -1 });
+            month = month <= 0 ? 12 : month;
 
-            res.render('order/all', { user, orders, companyId, isMyCompany: null, workerId, now });
+            const monthNames = constants.monthNames;
+
+            var orders = await Order.find({ workerId: workerId, month: month }).sort({ createdAt: -1 });
+
+            res.render('order/all', { user, orders, companyId, isMyCompany: null, workerId, monthNames, month, year });
         },
 
         async allInCompany(req, res) {
             const user = req.user;
-            const { workerId } = req.params;
+            const workerId = req.params.workerId;
             const { companyId, ownerId } = req.company;
 
             const now = new Date();
+            const year = now.getFullYear();
+            var month = req.params.month ? Number(req.params.month) : now.getMonth();
+            month = month <= 0 ? 12 : month;
 
-            const orders = await Order.find({ workerId: workerId, month: now.getMonth() }).sort({ createdAt: -1 });
+            const monthNames = constants.monthNames;
+
+            const orders = await Order.find({ workerId: workerId, month: month }).sort({ createdAt: -1 });
             const isMyCompany = user.id == ownerId;
 
-            res.render('order/all', { user, orders, companyId, isMyCompany, workerId, now });
+            res.render('order/all', { user, orders, companyId, isMyCompany, workerId, monthNames, month, year });
         },
 
         async calculateSumOfOrders(req, res) {
-            const { workerId } = req.params;
-
-            var now = new Date();
+            const workerId = req.params.workerId;
+            const month = req.params.month;
 
             const orders = await Order.find(
                 {
                     workerId: workerId,
-                    month: now.getMonth()
+                    month: month
                 }, 'totalSum').populate('reportId');
 
             const orderProducts = await Order.find({ workerId: workerId }, 'products');
