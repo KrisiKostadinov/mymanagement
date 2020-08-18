@@ -41,13 +41,13 @@
             Resignation
             <span class="badge badge-pill">
                 <% if(!resignation) { %>
-                    <form action="/worker/resignations" method="POST">
+                    <form action="/resignation" method="POST">
                         <input type="hidden" name="workerId" value="<%=worker._id%>">
                         <input type="hidden" name="companyId" value="<%=worker.companyId._id%>">
                         <button class="btn btn-danger" type="submit">Apply</button>
                     </form>
                 <% } else { %>
-                    <form action="/worker/resignations?_method=DELETE" method="POST">
+                    <form action="/resignation?_method=DELETE" method="POST">
                         <input type="hidden" name="workerId" value="<%=worker._id%>">
                         <input type="hidden" name="companyId" value="<%=worker.companyId._id%>">
                         <button class="btn btn-primary" type="submit">Cancel</button>

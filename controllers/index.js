@@ -6,6 +6,7 @@ const worker = require('../controllers/worker');
 const admin = require('../controllers/admin');
 const order = require('../controllers/order');
 const report = require('../controllers/report');
+const resignation = require('../controllers/resignation');
 
 module.exports = {
     user,
@@ -16,4 +17,5 @@ module.exports = {
     admin,
     order,
     report,
+    resignation,
 }

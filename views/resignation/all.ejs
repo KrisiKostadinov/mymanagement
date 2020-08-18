@@ -1,0 +1,33 @@
+<% if(messages.success) { %>
+<div id="success-msg" class="alert alert-success alert-dismissible fade show" role="alert">
+    <%= messages.success %>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<% } %>
+<div class="mt-2 col-md-6 mx-auto">
+    <% if(resignations.length > 0) { %>
+    <ul class="list-group">
+        <% resignations.forEach(resignation => { %>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <span><%= resignation.userId.firstName %> <%= resignation.userId.lastName %></span>
+            <div class="d-flex">
+                <form action="/resignation/cancel?_method=DELETE" method="POST">
+                    <input type="hidden" name="userId" value="<%=resignation.userId._id%>">
+                    <input type="hidden" name="companyId" value="<%=resignation.companyId%>">
+                    <button class="btn btn-primary" type="submit">Cancel</button>
+                </form>
+                <form action="/resignation/confirm?_method=DELETE" method="POST">
+                    <input type="hidden" name="userId" value="<%=resignation.userId._id%>">
+                    <input type="hidden" name="companyId" value="<%=resignation.companyId%>">
+                    <button class="ml-2 btn btn-danger" type="submit">Confirm</button>
+                </form>
+            </div>
+        </li>
+        <% }) %>
+    </ul>
+    <% } else { %>
+    <div class="alert alert-info">No resignations</div>
+    <% } %>
+</div>

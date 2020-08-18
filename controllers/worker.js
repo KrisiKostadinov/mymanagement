@@ -37,29 +37,6 @@ module.exports = {
             req.session.user = user;
 
             res.redirect('/worker/success');
-        },
-
-        async resignation(req, res) {
-            const { workerId, companyId } = req.body;
-            const userId = req.user.id;
-
-            await Resignation.create({
-                workerId,
-                userId,
-                companyId,
-            });
-
-            req.flash('success', 'The resignation is sended successfully!');
-            res.redirect('/user/index');
-        },
-
-        async resignationCancel(req, res) {
-            const userId = req.user.id;
-
-            await Resignation.findOneAndDelete({ userId: userId });
-
-            req.flash('success', 'The resignation is cancelled successfully!');
-            res.redirect('/user/index');
         }
     }
 }

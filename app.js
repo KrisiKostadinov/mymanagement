@@ -36,6 +36,7 @@ app.use('/shop', require('./routes/shop'));
 app.use('/worker', require('./routes/worker'));
 app.use('/order', require('./routes/order'));
 app.use('/report', require('./routes/report'));
+app.use('/resignation', require('./routes/resignation'));
 app.use('/admin', require('./routes/admin'));
 
 app.listen(port, () => console.log(`Server listening in ${env} on port: ` + port));
