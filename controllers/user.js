@@ -1,5 +1,8 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
+const Worker = require('../models/Worker');
+const Company = require('../models/Company');
+const Resignation = require('../models/Resignation');
 const { createToken } = require('../utils/jwt');
 
 module.exports = {
@@ -15,6 +18,17 @@ module.exports = {
         logout(req, res) {
             req.session.token = '';
             res.redirect('/user/login');
+        },
+
+        async index(req, res) {
+            const user = req.user;
+
+            const worker = await Worker.findOne({ userId: user.id })
+                .populate('userId').populate('companyId');
+
+            const resignation = await Resignation.findOne({ userId: user.id });
+
+            res.render('user/index', { user, worker, resignation });
         }
     },
 

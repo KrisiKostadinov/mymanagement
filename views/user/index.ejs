@@ -1,0 +1,59 @@
+<% if(messages.success) { %>
+<div id="success-msg" class="alert alert-success alert-dismissible fade show" role="alert">
+    <%= messages.success %>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<% } %>
+<h2 class="text-center">Hello, <%= worker.userId.firstName %> <%= worker.userId.lastName %>!</h2>
+<div class="row">
+    <ul class="list-group col-md-4">
+        <h4 class="text-center mt-4">Person data</h4>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            Full name
+            <span class="badge badge-pill"><%= worker.fullName %></span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            Phone number
+            <span class="badge badge-pill"><%= worker.phoneNumber %></span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            Email
+            <span class="badge badge-pill"><%= worker.email %></span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            City
+            <span class="badge badge-pill"><%= worker.city %></span>
+        </li>
+    </ul>
+    <ul class="list-group col-md-4">
+        <h4 class="text-center mt-4">Company data</h4>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            Name
+            <span class="badge badge-pill"><%= worker.companyId.name %></span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            Phone number
+            <span class="badge badge-pill"><%= worker.companyId.phoneNumber %></span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            Resignation
+            <span class="badge badge-pill">
+                <% if(!resignation) { %>
+                    <form action="/worker/resignations" method="POST">
+                        <input type="hidden" name="workerId" value="<%=worker._id%>">
+                        <input type="hidden" name="companyId" value="<%=worker.companyId._id%>">
+                        <button class="btn btn-danger" type="submit">Apply</button>
+                    </form>
+                <% } else { %>
+                    <form action="/worker/resignations?_method=DELETE" method="POST">
+                        <input type="hidden" name="workerId" value="<%=worker._id%>">
+                        <input type="hidden" name="companyId" value="<%=worker.companyId._id%>">
+                        <button class="btn btn-primary" type="submit">Cancel</button>
+                    </form>
+                <% } %>
+            </span>
+        </li>
+    </ul>
+</div>
