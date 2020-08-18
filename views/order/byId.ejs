@@ -1,0 +1,57 @@
+<h2 class="text-center">Order details for - <strong><%= order.createdAt.toDateString() %></strong></h2>
+<div class="row mx-auto">
+    <table class="col-md-6 table table-bordered text-center m-0">
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Count</th>
+        </tr>
+        <% order.products.forEach(product => { %>
+        <tr>
+            <td><%= product.name %></td>
+            <td><%= product.price %></td>
+            <td><%= product.count %></td>
+        </tr>
+        <% }) %>
+    </table>
+    <ul class="col-md-6 list-group">
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            Status
+            <span class="badge badge-pill"><%= order.status %></span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            Worker
+            <span class="badge badge-pill"><%= order.workerId.fullName %></span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            Total
+            <span class="badge badge-pill"><%= order.totalSum.toFixed(2) %> BGN</span>
+        </li>
+        <% if(order.reportId) { %>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                Different
+                <span class="badge badge-pill"><%= order.reportId.different.toFixed(2) %> BGN</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                Expected
+                <span class="badge badge-pill"><%= order.reportId.expectedSum.toFixed(2) %> BGN</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                Sales
+                <span class="badge badge-pill"><%= order.reportId.salesCount %></span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                Expected sales count
+                <span class="badge badge-pill"><%= order.reportId.expectedSalesCount %></span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                Is passed
+                <span class="badge badge-pill"><%= order.reportId.isPassed ? 'Yes' : 'No' %></span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                Average percent sales
+                <span class="badge badge-pill"><%= (Number(order.reportId.totalSum) / Number(order.reportId.expectedSum) * 100).toFixed(2) %>%</span>
+            </li>
+        <% } %>
+    </ul>
+</div>

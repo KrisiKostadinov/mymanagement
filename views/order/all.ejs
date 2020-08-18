@@ -11,16 +11,17 @@
 <% if(isMyCompany) { %>
 <div class="d-flex justify-content-between align-items-center my-2">
     <h2>Orders - <strong><%= monthNames[month] %> <%= year %></strong></h2>
-    <a href="/order/company/all/<%=workerId%>/<%=Number(month - 1)%>" class="btn btn-primary"><%= monthNames[month - 1] %></a>
+    <a href="/order/company/all/<%=workerId%>/<%=Number(month - 1)%>"
+        class="btn btn-primary"><%= monthNames[month - 1] %></a>
 </div>
 <% } else { %>
-    <div class="d-flex justify-content-between align-items-center my-2">
-        <div class="d-flex align-items-center">
-            <h2>Orders - <strong><%= monthNames[month] %> <%= year %></strong></h2>
-            <a href="/order/worker/all/<%=Number(month - 1)%>" class="ml-4 btn btn-primary"><%= monthNames[month - 1] %></a>
-        </div>
-        <a class="btn btn-primary" href="/order/<%=companyId%>">Add order</a>
+<div class="d-flex justify-content-between align-items-center my-2">
+    <div class="d-flex align-items-center">
+        <h2>Orders - <strong><%= monthNames[month] %> <%= year %></strong></h2>
+        <a href="/order/worker/all/<%=Number(month - 1)%>" class="ml-4 btn btn-primary"><%= monthNames[month - 1] %></a>
     </div>
+    <a class="btn btn-primary" href="/order/<%=companyId%>">Add order</a>
+</div>
 <% } %>
 <% if(orders.length > 0) { %>
 <% orders.forEach((order, index) => { %>
@@ -44,6 +45,7 @@
         Options
     </button>
     <div class="dropdown-menu dropdown-menu-right">
+        <a class="dropdown-item" href="/order/details/worker/<%=order._id%>">Order details</a>
         <% if(isMyCompany && order.status == 'pending') { %>
         <form action="/order/company/<%=order._id%>?_method=DELETE" method="POST">
             <input type="hidden" name="workerId" value="<%=order.workerId%>">
@@ -56,12 +58,12 @@
         <% } %>
         <% if(order.status == 'pending' && !isMyCompany) { %>
         <form action="/order/worker/<%=order._id%>?_method=DELETE" method="POST">
-            <button class="dropdown-item text-danger" type="submit">Cnacel order</button>
+            <button class="dropdown-item" type="submit">Cnacel order</button>
         </form>
         <% } else if(order.status == 'confirm') { %>
-        <a href="/report/details/<%=order._id%>" class="dropdown-item text-primary">View report</a>
+        <a href="/report/details/<%=order._id%>" class="dropdown-item">View report</a>
         <% if(!isMyCompany) { %>
-        <a href="/report/add/<%=order._id%>" class="dropdown-item text-primary">Report</a>
+        <a href="/report/add/<%=order._id%>" class="dropdown-item btn">Report</a>
         <% } %>
         <form action="/order/worker/<%=order._id%>?_method=DELETE" method="POST">
             <button class="dropdown-item text-danger" type="submit">Cnacel order</button>

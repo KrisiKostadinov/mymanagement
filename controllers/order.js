@@ -104,6 +104,18 @@ module.exports = {
                 expectedSalesCount,
                 ordersCount,
             });
+        },
+
+        async byId(req, res) {
+            const user = req.user;
+            const { orderId } = req.params;
+
+            const order = await Order.findOne({ _id: orderId })
+                .populate('reportId').populate('workerId');
+
+            console.log(order);
+
+            res.render('order/byId', { user, order });
         }
     },
 

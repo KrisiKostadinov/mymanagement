@@ -6,12 +6,15 @@
         </strong>
     </div>
 <% } %>
-<div class="col-md-6 my-4 mx-auto">
-    <h2>My companies</h2>
+<h2 class="text-center">My companies</h2>
+<div class="d-flex justify-content-center my-4">
     <% companies.forEach(company => { %>
-        <a class="list-group-item list-group-item-action" href="/company/<%=company._id%>"><%= company.name %></a>
-        <% if(user.claim === 'boss') { %>
-            <a href="/company/candidations/<%=company._id%>">Show candidations</a>
-        <% } %>
+        <div class="col-md-4 card p-0">
+            <img class="w-100" src="<%=company.imageUrl%>">
+            <div class="d-flex justify-content-between">
+                <a class="m-2 btn btn-link" href="/company/<%=company._id%>"><%= company.name %></a>
+                <a class="m-2 btn btn-link" href="/company/candidations/<%=company._id%>">Show candidations</a>
+            </div>
+        </div>
     <% }) %>
 </div>
